@@ -1,17 +1,18 @@
-  * Uncomment the following link to generate comments in the log
-  file on how the macro lines are expanded.  This line may
-  or may not be useful;
+* 	Uncomment the following link to generate comments in the log
+	file on how the macro lines are expanded.  This line may
+  	or may not be useful;
+
 options mprint;
 
-%MACRO create_datasets(num_states=);
+*%MACRO create_datasets(num_states=);
 
-LIBNAME states 'C:\datasets\states-files';
-%DO k = 1 TO &num_states;
-   data state_data;
-      infile 'C:\datasets\states-files\state&k.txt' dlm=',';
+LIBNAME states "C:\datasets\states-datasets"; * <- Error-1: Path for the libname should be in double quotes;
+%DO k = 1 %TO "&num_states"; * <- Error-2&3: Since Condition is used inside macro, we need to use %TO and macro variable should be enclosed in "" ;
+   DATA state_data;
+      infile "C:\datasets\states-files\state&k..txt" dlm=','; * <- Error-4&5 Double Quotes and defining the macro variable properly ;
       length state $ 20;
       length city $ 20;
-      input state $;
+      input id state $ population; * <-Error-6 Variables to read is missing;
       dsname = transwrd(trim(state), ' ', '_');
       call symput("name", state);
       call symput("dsname", dsname);
