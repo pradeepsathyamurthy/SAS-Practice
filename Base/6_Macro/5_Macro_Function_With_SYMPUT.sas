@@ -1,3 +1,5 @@
+* This is like assigning a value to a variable and using the variable else where using '&';
+* It is not necessary that CALL SYMPUT needs to be defined only inside %MACRO;
 * This is about macro variable;
 * Use CALL SYMPUT to set macro variables in a data step that would write data to external file;
 * SYMPUT is used to assign value to a marco variable inside a SAS command instead of defining it through %LET;
