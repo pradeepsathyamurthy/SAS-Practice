@@ -3,7 +3,7 @@ DATA WORK.IRIS_PRACTICE;
 RUN;
 
 * Simple report using proc print;
-PROC PRINT DATA=WORK.IRIS_PRACTICE;
+PROC PRINT DATA=WORK.IRIS_PRACTICE (OBS=10); * <- OBS needs to be given inside () and this will disply first 10 rows of data;
 run;
 
 * Column total using proc print;
