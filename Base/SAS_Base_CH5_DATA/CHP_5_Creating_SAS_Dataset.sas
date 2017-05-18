@@ -128,4 +128,4 @@ DATA _NULL_;
 	put ID Name $ RestHr MaxHR RecHR TimeMin TimeSec;
 RUN;
 
-
+* Keep command inside data step is used to subset the column globally;
