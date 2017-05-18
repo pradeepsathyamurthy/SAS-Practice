@@ -34,9 +34,33 @@ PROC REPORT DATA=CARS_SAMPLE NOWD;
 RUN;
 
 * Column definition;
-PROC REPORT DATA=CARS_SAMPLE NOWD SPLIT='*'; *<- Split is used to break the column label logically for display;
+PROC REPORT DATA=CARS_SAMPLE NOWD SPLIT='*' HEADLINE HEADSKIP; 
+	* <- Split is used to break the column label logically for display;
+	* <- HEADLINE is used to provide a dotted line below the column names, this affects only o/p window and not HTML report;
+	* <- HEADSKIP provide a space below the column label and its values, this affects only o/p window and not HTML report;
 	define Make/format=$CHAR8. width=3 spacing=10; * Width and spacing has its effect shown only in o/p window and not HTML window;
 	define Type/'Car*Type'; * Column label can be defined within ''. To control the word break we can use SPLIT;
-	define Cylinders/order descending center width=6 spacing=5;
+	define Model/center; * Default is left justify the char and right justify the numeric, center would centerise the values in column;
+	define Cylinders/order DESCENDING; * Data is ordered based on the column Cylinder, this is like grouping and odering, default ordering is ascending;
+	define Cylinders/group; * <- If just one column or numeric column is grouped, the result fetched is same as order by;
 RUN;
 
+* Column definition - usage of group definition;
+PROC REPORT DATA=CARS_SAMPLE NOWD SPLIT='*' HEADLINE HEADSKIP;
+	column cylinders MSRP;
+	define cylinders/group; * This will group all the Cylinder or categorical data together and produce a summary report on rest of the numerical columns;
+RUN;
+
+* Specifying statistics;
+PROC REPORT DATA=CARS_SAMPLE NOWD SPLIT='*' HEADLINE HEADSKIP;
+	column cylinders MSRP;
+	define cylinders/group;
+	define MSRP/mean 'Average of MSRP'; * Specifying statistic to compute MEAN;
+RUN;
+
+* Column definition - usage of across definition;
+PROC REPORT DATA=CARS_SAMPLE NOWD SPLIT='*' HEADLINE HEADSKIP;
+	column cylinders type MSRP;
+	define cylinders/across; 
+	define type/across;
+RUN;
