@@ -28,3 +28,7 @@ RUN;
 PROC MEANS DATA=CARS_SAMPLE1 MEAN MEDIAN RANGE; * <- Stats needed can be mentioned explicitly to print its result, default o/p gets suppressed;
 RUN;
 
+* Options that can be used to restrict the o/p in PROC MEANS;
+PROC MEANS DATA=CARS_SAMPLE1 MEAN maxdec=2; * <- This will restrict the decimal point to 2;
+RUN;
+
