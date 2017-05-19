@@ -30,5 +30,18 @@ RUN;
 
 * Options that can be used to restrict the o/p in PROC MEANS;
 PROC MEANS DATA=CARS_SAMPLE1 MEAN maxdec=2; * <- This will restrict the decimal point to 2;
+	var MSRP Invoice EngineSize Cylinders Horsepower MPG_City MPG_Highway Wheelbase Length; *<- VAR is used to mention the variables for which the stats is required;
+	class MAKE TYPE; *<- Provides statistics based on class levels of each variable mentioned, order plays a significant role; 
 RUN;
 
+PROC SORT DATA=CARS_SAMPLE1 out=CARS_SAMPLE2;
+	by Make TYPE;
+RUN;
+
+PROC MEANS DATA=CARS_SAMPLE1 MEAN maxdec=2;
+	var MSRP Invoice EngineSize Cylinders Horsepower MPG_City MPG_Highway Wheelbase Length; 
+	by Make Type; *<- before using 'by' these variables needs to be sorted;
+RUN;
+
+
+ 
