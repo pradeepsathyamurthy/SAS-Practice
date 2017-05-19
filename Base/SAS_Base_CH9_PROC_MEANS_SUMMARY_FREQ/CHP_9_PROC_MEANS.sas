@@ -43,5 +43,13 @@ PROC MEANS DATA=CARS_SAMPLE1 MEAN maxdec=2;
 	by Make Type; *<- before using 'by' these variables needs to be sorted;
 RUN;
 
+* Generating Summarized SAS dataset;
+PROC MEANS DATA=CARS_SAMPLE1; * <- This will restrict the decimal point to 2;
+	class TYPE; *<- Provides statistics based on class levels of each variable mentioned, order plays a significant role; 
+	output mean=MSRP Length out=CARS_STATS; *<- output command is used to mention the statistics that is needed on the class variable segregation;
+RUN;
+
+PROC PRINT DATA=CARS_STATS;
+RUN;
 
  
