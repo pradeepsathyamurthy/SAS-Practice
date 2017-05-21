@@ -5,8 +5,8 @@ DATA WORK.CARS_SAMPLE;
 	keep Make Model Type Origin MSRP Cylinders;
 RUN;
 
-*PROC PRINT DATA=CARS_SAMPLE;
-*RUN;
+* PROC PRINT DATA=CARS_SAMPLE;
+* RUN;
 
 /* 
 Need for this when we have PROC PRINT is:
