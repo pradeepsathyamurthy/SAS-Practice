@@ -4,7 +4,7 @@ Date: 09-May-2017
 Chapter: 5 - Creating SAS Data Sets From Raw Data
 */
 
-*SAS Dataset <- Any external data read by SAS and get stored in a format which is convinient for SAS to process is called SAS dataset;
+*SAS Dataset <-  Any external data read by SAS and get stored in a format which is convinient for SAS to process is called SAS dataset;
 
 * There are 3 style of input through which SAS can read a data and form a SAS Dataset
 1. List Style
