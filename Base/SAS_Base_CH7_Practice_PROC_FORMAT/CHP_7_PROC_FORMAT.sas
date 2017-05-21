@@ -1,5 +1,5 @@
 /* User Defined FORMAT */
-/* Here we will concentrate on how to create our own FORMAT style using PROC FORMAT*/
+/* Here we will concentrate on how to create our own FORMAT style using PROC FORMAT;*/
 
 *Before going into User defined formatting let see how to use system FORMATS;
 * Temporary system FORMAT behaviour;
