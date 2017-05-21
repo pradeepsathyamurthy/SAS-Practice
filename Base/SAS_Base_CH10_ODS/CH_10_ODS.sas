@@ -40,3 +40,19 @@ RUN;
 ODS _ALL_ CLOSE; *_ALL_ is used to close all ODS output with one single command;
 ODS LISTING; * We open this because _ALL_ will close all the ODS output and hence we need to explicitly have this open as part of best practice;
 
+/* Creating html output with table a table of contents */
+* These are used if any report needs to be showed based on a server request-response model;
+* Here we mention 
+	1. Body: This carries the data that is needed to be displayed as part of PORC execution
+	2. Contents: This carries the data that is has the link reference to each sucessful proc execution
+	3. Frame: This will link both Body and Contents files;
+ODS LISTING CLOSE; 
+ODS HTML 
+	BODY='D:\Courses\SAS\SAS-Practice\Base\SAS_Base_CH10_ODS\CARS_SAMPLE1_OUTPUT3.html'
+	CONTENTS='D:\Courses\SAS\SAS-Practice\Base\SAS_Base_CH10_ODS\CARS_SAMPLE1_CONTENT3.html'
+	FRAME='D:\Courses\SAS\SAS-Practice\Base\SAS_Base_CH10_ODS\CARS_SAMPLE1_FRAME3.html';
+PROC PRINT DATA=CARS_SAMPLE1 (OBS=10);
+RUN;
+ODS HTML CLOSE; *_ALL_ is used to close all ODS output with one single command;
+ODS LISTING; * We open this because _ALL_ will close all the ODS output and hence we need to explicitly have this open as part of best practice;
+
