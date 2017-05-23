@@ -1,4 +1,4 @@
-/* ODS Practice */
+/*  ODS Practice  */
 
 DATA WORK.CARS_SAMPLE1;
 	set SASHELP.CARS;
@@ -69,7 +69,6 @@ ODS HTML CLOSE; *_ALL_ is used to close all ODS output with one single command;
 ODS LISTING; * We open this because _ALL_ will close all the ODS output and hence we need to explicitly have this open as part of best practice;
 * You can check the frame.html file by opening it in Notepad++;
 
-
 /* Absolute Path - Each file can be in different directory locations*/
 /* Designing the ODS HTML contents using the Absolute URL path */
 ODS LISTING CLOSE; 
@@ -82,7 +81,6 @@ RUN;
 ODS HTML CLOSE; *_ALL_ is used to close all ODS output with one single command;
 ODS LISTING; * We open this because _ALL_ will close all the ODS output and hence we need to explicitly have this open as part of best practice;
 * You can check the frame.html file by opening it in Notepad++;
-
 
 /* PATH option */
 * This option is used to mention a relative path just once which can be used by BODY, CONTENTS and FRAME;
