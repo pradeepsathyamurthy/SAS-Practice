@@ -49,12 +49,43 @@ else put 'Note: Check this length: ' totaltime=;
 * Deleting the observation;
 * this will delete the whole row from the SAS dataset;
 if resthr <70 then delete;
+if resthr >70 then TempVar='Delete this row';
 
 * Using drop= and drop
 * there is a subtle difference between both:
 * 1. DROP statement cannot be used in SAS procedure. However, drop= can be used;
-* 2. When Drop= is used in datastep it 
+* 2. When Drop= is used in datastep it means, use those drop variables in data creation an finally drop it while creating output dataset;
+* 3. When Drop is used inside datastep it does the same thing, however functionality differs when used drop= inside SET command;
+drop TempVar;
+
+* Assigning permanent labels and formats;
+* To assign temporary labels it can be mentioned inside any procedures;
+* These labels and formats only affect the output data display and not the actual dataset;
+format rate COMMA10.2;
+label Rate='Temp Rate Variable';
+
+* Using Select-When in SAS is like using SWITCH case in any other language;
+* Select statement is optional, if select is not given when statement would be validated and gets stops after first true occurence;
+select (ID);
+when ("2458") group = "Flight Attended I";
+when ("2501") group = "Flight Attended";
+otherwise group = "others";
+end;
+
+* Grouping statement;
+* Remember we will not use semicolon after when statement while using do-end into it;
+select (Testlength_Mod);
+when ('Normal')
+	do;
+		amount=8*totaltime;
+		format amount DOLLAR15.;
+	end;
+otherwise amount=0;
+end;
+
+ 
+
 RUN;
 
-PROC PRINT DATA=WORK.STRESS_PRACTICE;
+PROC PRINT DATA=WORK.STRESS_PRACTICE label; * to print the labels used in dataset it needs to be explicitly mentioned;
 RUN;
