@@ -1,4 +1,5 @@
 /* Stacking or merging two datasets - use set operator with data set names*/
+* COncatenation;
 * Here we are trying to merge one data set over other;
 DATA BOLT_CORASE;
 	infile 'c:/datasets/bolts-coarse.txt' firstobs=2;
