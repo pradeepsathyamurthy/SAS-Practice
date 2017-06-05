@@ -1,14 +1,17 @@
 /* This will cover the functions available in SAS and its usage */
 * abs - this function will take an input x and output the absolute vale of x;
 DATA LENGTH_DATA;
-	input a $10.;
+	input a $CHAR30.;
 	b=length(a);
+	c=lengthn(a);
+	d=lengthc(a);
+	e=lengthm(a);
 	datalines;
-Pradeep
+Pra deep Sathyamurthy
 ;
 
 PROC PRINT;
-	var a b;
+	var a b c d e;
 
 RUN;
 QUIT;

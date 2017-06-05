@@ -15,6 +15,7 @@ name="Sruthi";
 gender="Female";
 age="24";
 output;
+RUN;
 
 PROC PRINT data=data_no_input;
 
