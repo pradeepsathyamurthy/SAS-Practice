@@ -1,3 +1,4 @@
+/* Used to substring with start and end values */
 data test1;
 	input x $;
 	datalines;
