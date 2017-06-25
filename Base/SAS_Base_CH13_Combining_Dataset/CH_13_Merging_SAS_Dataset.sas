@@ -111,12 +111,14 @@ DATA DATA_SIMPLE_MATCH_MERGE_CASE1;
 	BY NUM;
 RUN;
 
+* 4.1. Diff between Concatenation and Simple Merge: Doesnt stops its iteration wrt the smaller dataset, loop extends to the maximum observations;
 DATA DATA_SIMPLE_MATCH_MERGE_CASE2;
 	MERGE A B;
 RUN;
 
 DATA DATA_SIMPLE_MATCH_MERGE_CASE3;
 	MERGE A C;
+	by Num;
 RUN;
 
 DATA DATA_SIMPLE_MATCH_MERGE_CASE4;
@@ -130,8 +132,17 @@ PROC PRINT DATA = DATA_SIMPLE_MATCH_MERGE_CASE4;
 RUN;
 
 * Order of Sorting can be changed to decending by mentioning DECENDING after BY Statement;
-* It must be done in all PROC SORT steps and as well in merge statement accordingly
-* e.g. PROC SORT DATA = DS1; *by DECENDING NUM; * DATA DS3; * MERGE DS1 DS2; * BY DECENDING NUM; *RUN;
+* It must be done in all PROC SORT steps and as well in merge statement accordingly;
+PROC SORT DATA = A;
+	BY DECENDING NUM;
+PROC SORT DATA = C;
+	BY DECENDING NUM;
+DATA DATA_MATCH_MERGE_DESCENDING;
+	MERGE A C;
+	by DESCENDING Num;
+RUN;
+PROC PRINT DATA=DATA_MATCH_MERGE_DESCENDING;
+RUN;
 
 * RENAME;
 * IN;
