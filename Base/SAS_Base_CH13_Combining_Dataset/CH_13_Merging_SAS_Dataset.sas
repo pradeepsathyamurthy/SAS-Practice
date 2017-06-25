@@ -78,10 +78,10 @@ RUN;
 PROC PRINT DATA = DATA_Concatenate_Case1;
 RUN;
 
-* 3. Interleaving - Mutiple Mathching Observation for a unique value mentioned in BY - Single SET statement - No Missing Value - No Values Skipped;
+* 3. Interleaving - Mutiple Mathching Observation for a unique value mentioned in BY - Single SET + BY statement - No Missing Value - No Values Skipped;
 * This is like a reveat, just join two data set with a common variable, it is a union of multiple dataset;
 * Thus provides multiple matching observation for a single observation in BY statement;
-* Data read based on the order of By Variables defined
+* Data read based on the order of By Variables defined;
 PROC SORT DATA = A;
 	BY NUM;
 PROC SORT DATA = B;
@@ -104,7 +104,7 @@ PROC PRINT DATA=DATA_Interleave_Case1;
 PROC PRINT DATA=DATA_Interleave_Case2;
 RUN;
 
-* 4. Match Merging - One matching observation for a unique value mentioned in BY - Single MERGE statement - Missing Values - No Values skipped;
+* 4. Match Merging - One matching observation for a unique value mentioned in BY - Single MERGE + BY statement - Missing Values - No Values skipped;
 * Simple Match Merging;
 * Important thing to be noted is the PDV will retain its value untill the value for all BY variables changes;
 DATA DATA_SIMPLE_MATCH_MERGE_CASE1;
@@ -172,7 +172,7 @@ PROC PRINT DATA=MERGE_WITH_RENAME;
 RUN;
 
 * IN;
-* This is a temporary variable, which is used to merge data only with matching values of BY variable;
+* IN is a temporary variable, which is used to merge data only with matching values of BY variable;
 * Used to select only the observations that appear in both dataset;
 PROC SORT DATA=CLINIC.CAP2000;
 	by FlightID;
