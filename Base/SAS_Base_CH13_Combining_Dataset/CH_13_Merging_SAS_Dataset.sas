@@ -106,6 +106,7 @@ RUN;
 
 * 4. Match Merging - One matching observation for a unique value mentioned in BY - Single MERGE statement - Missing Values - No Values skipped;
 * Simple Match Merging;
+* Important thing to be noted is the PDV will retain its value untill the value for all BY variables changes;
 DATA DATA_SIMPLE_MATCH_MERGE_CASE1;
 	MERGE A B;
 	BY NUM;
@@ -145,6 +146,50 @@ PROC PRINT DATA=DATA_MATCH_MERGE_DESCENDING;
 RUN;
 
 * RENAME;
+* In case any two dataset has same column name, SAS will overwrite the data with the latest data it encounters;
+* In order to prevent this we can rename the matching variables using RENAME while defining the dataset in MERGE statement;
+PROC SORT DATA=CLINIC.CAP2000;
+	by FlightID;
+RUN;
+
+PROC SORT DATA=CLINIC.CAP2001;
+	by FlightID;
+RUN;
+
+DATA MERGE_WITHOUT_RENAME;
+	MERGE clinic.cap2000 clinic.cap2001 ;
+	by FlightID;
+RUN;
+
+DATA MERGE_WITH_RENAME;
+	MERGE clinic.cap2000 (rename= (date=Date_2000))
+			clinic.cap2001 (rename=(date=Date_2001));
+	by FlightID;
+RUN;
+
+PROC PRINT DATA=MERGE_WITHOUT_RENAME;
+PROC PRINT DATA=MERGE_WITH_RENAME;
+RUN;
+
 * IN;
+* This is a temporary variable, which is used to merge data only with matching values of BY variable;
+PROC SORT DATA=CLINIC.CAP2000;
+	by FlightID;
+RUN;
+
+PROC SORT DATA=CLINIC.CAP2001;
+	by FlightID;
+RUN;
+
+DATA MERGE_WITH_IN;
+	MERGE clinic.cap2000 (in=in2000 rename= (date=Date_2000))
+			clinic.cap2001 (in=in2001 rename=(date=Date_2001));
+	by FlightID;
+	if in2000=1 and in2001=1;
+RUN;
+
+PROC PRINT DATA=MERGE_WITH_IN;
+RUN;
+
 * drop/keep;
 * first. / last.;
