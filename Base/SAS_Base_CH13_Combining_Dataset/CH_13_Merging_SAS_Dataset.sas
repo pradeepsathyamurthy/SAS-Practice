@@ -114,7 +114,7 @@ RUN;
 
 * 4.1. Diff between Concatenation and Simple Merge: Doesnt stops its iteration wrt the smaller dataset, loop extends to the maximum observations;
 DATA DATA_SIMPLE_MATCH_MERGE_CASE2;
-	MERGE A B;
+	MERGE A B; * One to one merging;
 RUN;
 
 DATA DATA_SIMPLE_MATCH_MERGE_CASE3;
@@ -173,6 +173,7 @@ RUN;
 
 * IN;
 * This is a temporary variable, which is used to merge data only with matching values of BY variable;
+* Used to select only the observations that appear in both dataset;
 PROC SORT DATA=CLINIC.CAP2000;
 	by FlightID;
 RUN;
@@ -185,11 +186,28 @@ DATA MERGE_WITH_IN;
 	MERGE clinic.cap2000 (in=in2000 rename= (date=Date_2000))
 			clinic.cap2001 (in=in2001 rename=(date=Date_2001));
 	by FlightID;
-	if in2000=1 and in2001=1;
+	if in2000=1 and in2001=1; * This statement does the magic of selecting only the obs present in both datasets;
+	* This should be non-zero or non-missing values to be true and get the obs merged and write into target dataset;
+	* If Zero or Missing  above expression becomes false and dataset dont get merged and do not write to target dataset;
 RUN;
 
 PROC PRINT DATA=MERGE_WITH_IN;
 RUN;
 
 * drop/keep;
-* first. / last.;
+* This is used to select the variables that is needed in target dataset;
+* DROP/KEEP in DATA statement means drop those variable as part of DROP in target dataset;
+* DROP/KEEP in merge statement means dont even consider while merging, drop them even before PDV is completely formed;
+PROC SORT DATA=CLINIC.CAP2001;
+	by FlightID;
+RUN;
+
+DATA MERGE_WITH_DROP (DROP=CapBusiness);
+	MERGE clinic.cap2000 (drop=cap1st in=in2000 rename= (date=Date_2000))
+			clinic.cap2001 (drop=cap1st in=in2001 rename=(date=Date_2001));
+	by FlightID;
+	if in2000=1 and in2001=1;
+RUN;
+
+PROC PRINT DATA=MERGE_WITH_DROP;
+RUN;
