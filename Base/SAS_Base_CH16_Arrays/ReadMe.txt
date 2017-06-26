@@ -8,8 +8,3 @@
 	3. Create new variables with an array element
 	4. Assign Initial values to array elements
 	5. Create temporary array elements with an array satement */
-
-/*  				ARRAY Name
-			|-----|----|----|-----|-----|
-	   Variables   Var1  Var2 Var3 Var4  Var5  Var6
-*/
