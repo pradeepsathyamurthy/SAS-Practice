@@ -144,6 +144,5 @@ DATA SUBSET;
 	end;
 	stop;
 RUN;
-
 PROC PRINT DATA=SUBSET;
 RUN;
