@@ -118,7 +118,6 @@ DATA H;
 		year+1;
 	end;
 RUN;
-
 PROC PRINT DATA=H;
 RUN;
 
@@ -146,5 +145,6 @@ DATA SUBSET;
 	end;
 	stop;
 RUN;
+
 PROC PRINT DATA=SUBSET;
 RUN;
