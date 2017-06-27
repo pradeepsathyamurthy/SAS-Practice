@@ -9,5 +9,136 @@
 	4. Assign Initial values to array elements
 	5. Create temporary array elements with an array satement */
 
+/*  				ARRAY Name
+			|-----|----|----|-----|-----|
+Variables   Var1  Var2 Var3 Var4  Var5  Var6
+*/
 
+* General form of an ARRAY and Specifying Array Elements;
+* ARRAYS have a Name, dimension and array elements (generally group of variables);
+* Default DImention is 1 for an array;
+* Array elements must be of same type;
+* Array lives only within data step, outside data step it will expire;
+DATA A;
+	ARRAY Scores[5] Score1 Score2 Score3 Score4 Score5;
+	ARRAY Quizs[5] Quiz6 - Quiz10;
+	ARRAY Sales{3} Sale1 - Sale3;
+	ARRAY Days(7) Day1 - Day7;
+RUN;
+
+* Remember these will just initiate arrays and will not carry any values;
+PROC PRINT DATA=A;
+RUN;
+
+* Variable lists as Array Elements;
+* {*} is used to define a one dimentional array;
+DATA B;
+	ARRAY Nums(*) _NUMERIC_; * Specify a Numeric array with zero element;
+	ARRAY Chars{*} _CHARACTER_; * Specify a Character array with zero element;
+	ARRAY Alls[*] _ALL_; * Specify a genric array with zero element, it specify all variables of same type (all char or all numeric);
+RUN;
+* Remember these will just initiate arrays and will not carry any values;
+PROC PRINT DATA=B;
+RUN;
+
+* Referencing elements of Array;
+DATA C (DROP=i);
+	ARRAY Scores[5] Score1 Score2 Score3 Score4 Score5;
+	Scores[1] = 89;
+	Scores[2] = 90;
+	Scores[3] = 92;
+	Scores[4] = 97;
+	Scores[5] = 100;
+	ARRAY Quizs[5] Quiz6 - Quiz10;
+	do i=1 to 5;
+		Quizs[i] = i*2;
+	end;
+RUN;
+* Remember these will just initiate arrays and will not carry any values;
+PROC PRINT DATA=C;
+RUN;
+
+* How to use arrays to manipulate the observations;
+DATA D;
+	input Name $CHAR5. weight1-weight4;
+	datalines;
+Alici 69.6 68.9 68.8 67.4
+Betsy  52.6 52.6 51.7 50.4
+;
+RUN;
+
+DATA E (DROP=i);
+	SET D;
+	array weights[4] weight1-weight4;
+	do i = 1 to 4;
+		weights[i] = weights[i] * 2.24;
+	end;
+RUN;
+
+PROC PRINT DATA=D;
+PROC PRINT DATA=E;
+RUN;
+
+* DIM - DIM function is used to find the dimention of an array and use it as a STOP Value in DO loop that gets associated;
+DATA F;
+	input Name $CHAR5. weight1-weight4;
+	datalines;
+Alici 69.6 68.9 68.8 67.4
+Betsy  52.6 52.6 51.7 50.4
+;
+RUN;
+DATA G (DROP=i);
+	SET F;
+	array weights[4] weight1-weight4;
+	do i = 1 to dim(weights);
+		weights[i] = weights[i] * 2.24;
+	end;
+RUN;
+PROC PRINT DATA=F;
+PROC PRINT DATA=G;
+RUN;
+
+* Creating array variables, to create this we just need to declare an array and not mention any elements for it;
+DATA H;
+	array weights[4]; * This will create automatic variables like weights1, weights2, weights3 and weights4;
+RUN;
+
+* Creating arrays of Character variable;
+* Use $ to declare a charcter variable;
+* Default Character length is 8;
+* If you need to increase the character element size, it needs to be mentioned after $;
+DATA I;
+	array weights[4] $;
+	weights[1]="PRADEEPSATHYAMURTHY";
+	array sizes[2] $ 32;
+	sizes[1]="PRADEEPSATHYAMURTHY";
+RUN;
+PROC PRINT DATA=I;
+RUN;
+
+* Using array with iterative DO loop;
+* In SAS we can deal each observation record by record only;
+* So any comparison between each collumn of a particular row is possible so far from what i have read;
+* Yet to read how to do the collumn wise comparison;
+DATA J (drop = i);
+	set Hrd.Ctargets;
+	array months[12] Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec;
+	array MonDiff[11];
+	do i = 1 to dim(MonDiff);
+		MonDiff[i] = months[i+1] - months[i];
+	end;
+RUN;
+
+PROC PRINT DATA=J;
+RUN;
+
+* Assigning Initial values to array;
+DATA K;
+	array Nums[3] (1,2,3);
+	array Digts[4] (1 2 3 4);
+	array Names[3] $ ('Prady','Srut','Prem');
+RUN;
+
+PROC PRINT DATA=K;
+RUN;
 
