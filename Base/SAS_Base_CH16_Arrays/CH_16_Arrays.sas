@@ -119,6 +119,7 @@ RUN;
 * Using array with iterative DO loop;
 * In SAS we can deal each observation record by record only;
 * So any comparison between each collumn of a particular row is possible so far from what i have read;
+* To perform collumn wise comparison you need to use Multi Dimentional array;
 * Yet to read how to do the collumn wise comparison;
 DATA J (drop = i);
 	set Hrd.Ctargets;
@@ -133,12 +134,40 @@ PROC PRINT DATA=J;
 RUN;
 
 * Assigning Initial values to array;
-DATA K;
+DATA K (drop = i);
 	array Nums[3] (1,2,3);
 	array Digts[4] (1 2 3 4);
 	array Names[3] $ ('Prady','Srut','Prem');
+	array Temp[2] _TEMPORARY_ (6,7); * These are temp variables used only for internal SAS usage;
+	array Temp_Usg[2];
+	do i = 1 to 2;
+		Temp_Usg[i] = Temp[i]; * See how _TEMPORARY_ works, it is used internally by SAS;
+	end;
 RUN;
 
 PROC PRINT DATA=K;
 RUN;
+
+* Multi-Dimentional Array;
+* Defining Multi-Dimentional Array;
+* To define this we need to define dimentions of elements using a comma seperator;
+* Generally a multi-dimentional array elements can be accessed using the nested DO loop;
+* Here as part of compilation state the PDV is created with all variables;
+* Later, for each inner DO loop PDV gets updated for that particular column intermediately;
+* And for each outer DO loop PDV gets updated for the particular column permanently;
+* Once all the column in the PDV is updated with its respective values, PDV write the result to target dataste;
+Data L (DROP = i j count);
+	array Temperatures[3,4] Temperature1-Temperature12;
+	Count = 1;
+	do i = 1 to 3;
+		do j = 1 to 4;
+			Temperatures[i,j] = Count;
+			Count+1;
+		end;
+	end;
+RUN;
+
+PROC PRINT DATA=L;
+RUN;
+
 
