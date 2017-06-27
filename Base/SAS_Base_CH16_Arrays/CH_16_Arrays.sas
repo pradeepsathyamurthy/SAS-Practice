@@ -166,8 +166,19 @@ Data L (DROP = i j count);
 		end;
 	end;
 RUN;
-
 PROC PRINT DATA=L;
 RUN;
 
-
+* Arrays can also be used to transpose a dataset;
+* This how we change the rows to collumn and vice-versa;
+* However, it not a complete transpose, we need to drop column accordingly;
+DATA ROTATE (DROP=qtr1-qtr4);
+	set finance.funddrive;
+	array contrib[4] Qtr1-Qtr4;
+	do Qtr=1 to 4;
+		Amount=contrib[qtr];
+		output;
+	end;
+RUN;
+PROC PRINT DATA = ROTATE noobs;
+RUN;
