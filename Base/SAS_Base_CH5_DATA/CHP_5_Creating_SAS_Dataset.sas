@@ -22,9 +22,9 @@ We will concentrate more on the Column Style here as part of this chapeter;
 	5. Input Statement
 	6. Run statement for execution ;
 
-LIBNAME CH5_LIB 'D:\Courses\SAS\SAS-Practice\Base\SAS_Base_CH5_Practice'; * reference SAS Data Library;
+LIBNAME CH5_LIB 'D:\Courses\SAS\SAS-Practice\Base\SAS_Base_CH5_DATA'; * reference SAS Data Library, path mentioned must be a valid path else lib reference will not be created and throws error;
 * libref must follow standard format can contain only [a-z0-9] and _ Also name cannot exceed more than 8 char in length;
-FILENAME CH5_FILE 'D:\Courses\SAS\SAS-Practice\Base\SAS_Base_CH5_Practice'; * Referemce the external file - this is a temporary reference. However, FILENAME is GLOBAL as LIBNAME;
+FILENAME CH5_FILE 'D:\Courses\SAS\SAS-Practice\Base\SAS_Base_CH5_DATA'; * Referemce the external file - this is a temporary reference. However, FILENAME is GLOBAL as LIBNAME;
 * File Name refence can be fully qualified name (till the file name -> 'D:\Courses\SAS\SAS-Practice\Base\SAS_Base_CH5_Practice\baylor-religion-survey-data-2007.txt';
 * Or file name reference can be an aggregated storage location (Directory that contains multiple external files) -> 'D:\Courses\SAS\SAS-Practice\Base\SAS_Base_CH5_Practice';
 * fileref must follow standard format can contain only [a-z0-9] and _ Also name cannot exceed more than 8 char in length;
@@ -102,7 +102,7 @@ RUN;
 DATA CH5_LIB.stress; * do not execute this peice, such dataset doesnt exist in my local;
 	input ID Name $ RestHr MaxHR RecHR TimeMin TimeSec @@;
 	TotalTime=(timemin*60)+timesec; *Shows how to create a new variable;
-	resthr=resthr+(resthr*.10); *Even this is valid, stament in left processed first and then get assigned to right;
+	resthr=resthr+(resthr*.10); *Even this is valid, stament in right processed first and then get assigned to left - check this;
 	TestDate='01JAN2000'd; * This how we initialize the date constant';
 	TestTime='09:25't; * This how we initialize the time constant';
 	DateTime='18Jan2011:09:23:05'dt; * This how we initialize the datetime constant';
@@ -110,8 +110,8 @@ DATA CH5_LIB.stress; * do not execute this peice, such dataset doesnt exist in m
 datalines;
  1 	  Prady					2	1	2  3  2
  2	  Sruthi				3	2	3  4  3
-;	
-RUN; *<- No need of RUN command after mentioning NULL in above command, it is oprional. If you you RUN any commans between NULL and RUn will not be executed by SAS;
+;	*<- This is called null statement;
+RUN; *<- No need of RUN command after mentioning NULL in above command, it is oprional. If you you RUN any commands between NULL and RUN will not be executed by SAS;
 
 PROC PRINT DATA=CH5_LIB.stress;
 RUN;
