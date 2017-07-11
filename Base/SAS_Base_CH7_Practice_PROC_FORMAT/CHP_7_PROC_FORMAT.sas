@@ -12,7 +12,7 @@ Gokul	27	75000
 ;
 
 PROC Print DATA=SAMPLE1;
-	format Salary Dollar15.0; * Associating format temporarily to variables;
+	format Salary Dollar15.0; * Associating format temporarily to variables, this formatting has a local scope;
 RUN;
 
 PROC Print DATA=SAMPLE1;
@@ -22,7 +22,7 @@ RUN;
 *Permanent System FORMAT behaviour;
 DATA SAMPLE2;
 	input Name $ Age Salary 15.0;
-	format Salary Dollar15.0; * Associating format permanantly to the variables;
+	format Salary Dollar15.0; * Associating format permanantly to the variables, this has a global scope;
 	datalines;
 Pradeep	32	700000
 Sruthi	23	750000
@@ -34,8 +34,14 @@ PROC Print DATA=SAMPLE2;
 RUN;
 
 
-/* Invoking the USER Defined Library */
-LIBNAME library 'D:\Courses\SAS\SAS-Practice\Base\SAS_Base_CH7_Practice'; * In live projects it is advisable to create your own folder for format anf define that in libname;
+/* Defining and Invoking the USER Defined Format */
+
+* Understand that every procedure is associated with a SAS Dataset, e.g. PROC PRINT DATA = WORK.DATA1;
+* However, in case of PROC FORMAT, we cannot associate a SAS data, because sas data cannot carry formats with them, they can only use it;
+* Formats are only present in system or user libraries;
+* Hence, we need to assiciate PROC FORMAT with a SAS library, e.g. PROC FORMAT LIB = <library reference>; 
+* you can define this <library reference> using LIBNAME command and creating library reference as shown below;
+LIBNAME library 'D:\Courses\SAS\SAS-Practice\Base\SAS_Base_CH7_Practice_PROC_FORMAT\practice'; * In live projects it is advisable to create your own folder for format anf define that in libname;
 PROC FORMAT LIB=library FMTLIB; * FMTLIB <- list all the user defined format in the library or library catalog;
 	* Remember, name of the format cannot end with a number;
 	value firstfmt 
@@ -65,9 +71,10 @@ RUN;
 	2. Character Format 
 	3. Range Format
 	If we have more than one format to be defined we can do so using the multiple format definition */
-LIBNAME library 'D:\Courses\SAS\SAS-Practice\Base\SAS_Base_CH7_Practice'; * In live projects it is advisable to create your own folder for format anf define that in libname;
+LIBNAME library 'D:\Courses\SAS\SAS-Practice\Base\SAS_Base_CH7_Practice_PROC_FORMAT\practice'; * In live projects it is advisable to create your own folder for format anf define that in libname;
 PROC FORMAT LIB=library; * FMTLIB <- list all the user defined format in the library or library catalog;
 	* Remember, name of the format cannot end with a number, secondfmt is the format name which will be store inside the catelog;
+	* Only those formats which will be applied on a character data has to be defined with $ in start, based on data decide its format type;
 	value secondfmt 
 		101='Manager'
 		102='Text Processor'
@@ -81,7 +88,7 @@ PROC FORMAT LIB=library; * FMTLIB <- list all the user defined format in the lib
 		'C'-'E'='Average'
 		'F'='Poor';
 
-	value fourfmt
+	value fourfmt 
 		low-<13='Child'
 		13-<20='teenager'
 		20-<65='adult'
@@ -101,6 +108,10 @@ Sathya	56	800000	105	E	68
 ;
 
 PROC PRINT DATA=SAMPLE4;
+RUN;
+
+* Validate the user formats created;
+PROC FORMAT LIB=library FMTLIB;
 RUN;
 
 * Formats created can be deleted using the PROC CATALOG command;
