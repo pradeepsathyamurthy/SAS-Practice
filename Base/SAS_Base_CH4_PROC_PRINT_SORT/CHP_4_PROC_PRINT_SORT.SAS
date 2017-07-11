@@ -13,12 +13,12 @@ PROC PRINT DATA=WORK.IRIS_PRACTICE;
 	sum sepallength;
 run;
 
-*Sorting the data in SAS dataset;
+*Sorting the data in SAS dataset; * When sorted out must be used to generate new dataset else PROC SORT will disturb the existing dataset;
 PROC SORT DATA=WORK.IRIS_PRACTICE OUT=WORK.IRIS_PRACTICE_SORTED;
 	by descending sepallength petallength;
 RUN;
 
-PROC PRINT DATA=WORK.IRIS_PRACTICE_SORTED;
+PROC PRINT DATA=WORK.IRIS_PRACTICE_SORTED LABEL; *you got to use explicit LABEL to print the label;
 	var species petallength sepallength; *mentions the order in which the data needs to be printed;
 	label Species='IRIS Flower Type';
 RUN;
@@ -55,7 +55,7 @@ PROC PRINT DATA=WORK.IRIS_PRACTICE;
 run;
 
 PROC PRINT DATA=WORK.IRIS_PRACTICE;
-	WHERE species in ('Versicolor','Virginica'); *CONTAINS check substring, ? can be used as a substitute;
+	WHERE species in ('Versicolor','Virginica'); *This is a SQL style IN operator, remember string within quotes are case sensitive;
 run;
 
 * Using SUM to total the specific numerical data;
