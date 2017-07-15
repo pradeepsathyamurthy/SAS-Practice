@@ -4,6 +4,8 @@
 DATA Work.SAS_DATASET1;
 	SET Clinic.Acities; * SET command is used to read a sas dataset;
 RUN;
+PROC PRINT DATA=Work.SAS_DATASET1;
+RUN;
 
 PROC SORT data=Clinic.Acities OUT= WORK.ACITIES_SORTED; * remember to use data= while using proc sort;
 	by country;
@@ -24,12 +26,15 @@ DATA Work.SAS_DATASET2;
 	*format date $ MMDDYY10.; *Format a variable;
 
 RUN;
+PROC PRINT DATA=Work.SAS_DATASET2;
+RUN;
 
 DATA Work.SAS_DATASET3;
 	set WORK.ACITIES_SORTED;
 	by country; * Sorted by a column;
 RUN;
-
+PROC PRINT DATA=Work.SAS_DATASET3;
+RUN;
 
 DATA Work.SAS_DATASET4;
 	obsnum = 5;
@@ -37,30 +42,26 @@ DATA Work.SAS_DATASET4;
 	output; *By using POINT SAS will not have EoF to start execution, so explicit output is needed;
 	stop; * again due to absence of EoF, we need explicit STOP else dataset will keep iterating;
 RUN;
+PROC PRINT DATA=Work.SAS_DATASET4;
+RUN;
 
+* Multiple SAS DATA set can be created at once;
 DATA Work.SAS_DATASET5 Work.SAS_DATASET6;
 	set Clinic.Admit;
+RUN;
+PROC PRINT DATA = Work.SAS_DATASET5;
 RUN;
 
 DATA Work.SAS_DATASET7 Work.SAS_DATASET8;
 	set Clinic.Admit;
 	output Work.SAS_DATASET8; *Observations for SAS_DATASET7 will be 0, only variables would be created. However, SAS_DATASET8 is filled with observations;
 RUN;
-
-PROC PRINT DATA = Work.SAS_DATASET5;
-RUN;
-
 PROC PRINT DATA = Work.SAS_DATASET6;
 RUN;
 
-PROC PRINT DATA=Work.SAS_DATASET1;
-RUN;
 
-PROC PRINT DATA=Work.SAS_DATASET2;
-RUN;
 
-PROC PRINT DATA=Work.SAS_DATASET3;
-RUN;
 
-PROC PRINT DATA=Work.SAS_DATASET4;
-RUN;
+
+
+
