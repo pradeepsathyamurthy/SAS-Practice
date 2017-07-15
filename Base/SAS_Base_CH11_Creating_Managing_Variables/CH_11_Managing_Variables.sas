@@ -3,6 +3,7 @@
 *PROC CONTENTS DATA=Clinic.Stress2;
 *RUN;
 
+* Before executing this scipt download the SAS inbuilt datastes from help menu;
 * Reading a SAS Dataset;
 DATA WORK.STRESS_PRACTICE;
 set Clinic.Stress2;
@@ -36,7 +37,7 @@ if Tolerance='N' | Tolerance='S' then Rate=totaltime*3; * Using the or operator;
 if totaltime > 800 then TestLength='Long';
 else if 750 <= totaltime <= 800 then TestLength='Normal'; * look at how the comparison operator is used here;
 else if totaltime < 750 then TestLength='Short';
-else put 'Note: Check this length: ' totaltime=;
+else put 'Note: Check this length: ' totaltime=; * PUT statement is used to write text to log, this also shows else can exists standalone without IF-then statement;
 
 * however, if you see the result before this step 'TestLength' would have a truncated value;
 * to avoid this we need to explicitly mention the length, else the length of first encountered string would be considered as its length;
@@ -49,7 +50,7 @@ else put 'Note: Check this length: ' totaltime=;
 * Deleting the observation;
 * this will delete the whole row from the SAS dataset;
 if resthr <70 then delete;
-if resthr >70 then TempVar='Delete this row';
+if resthr >70 then TempVar='Delete this row'; * This is defining the column value ;
 
 * Using drop= and drop
 * there is a subtle difference between both:
@@ -82,8 +83,6 @@ when ('Normal')
 	end;
 otherwise amount=0;
 end;
-
- 
 
 RUN;
 
