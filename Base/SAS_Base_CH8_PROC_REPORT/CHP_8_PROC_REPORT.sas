@@ -5,24 +5,24 @@ DATA WORK.CARS_SAMPLE;
 	keep Make Model Type Origin MSRP Cylinders;
 RUN;
 
+* Dataset can be printed using PROC PRINT;
 * PROC PRINT DATA=CARS_SAMPLE;
 * RUN;
 
 /* 
-Need for this when we have PROC PRINT is:
+Reason for the need of PROC REPORT when we have PROC PRINT are:
 1. This is a dedicated report writing tool in SAS
 2. Can write Custom reports
 3. Do seperate subtotals and grand totals
 4. create and store report definitions (formats, column spacing & justification, heading and order)
 5. Observation column will not be displayed here
-
 */
 
-PROC REPORT DATA=CARS_SAMPLE NOWD; * <- NOWD will not invoke a new report session, if WD is used a new report window will be invoked; 
+PROC REPORT DATA=CARS_SAMPLE WD; * <- If WD is used a new report window will be invoked, default is NOWD; 
 RUN;
 
 * Subsetting the column required;
-PROC REPORT DATA=CARS_SAMPLE NOWD;
+PROC REPORT DATA=CARS_SAMPLE NOWD; * <- NOWD will not invoke a new report session;
 	column MSRP Make MSRP; * <- COLUMN command is used, it is scoped local, if subsetting needs to be done in data level KEEP is used;
 	* Order mentioned above is followed in tact and even the column duplication is allowed;
 RUN;
@@ -38,7 +38,7 @@ PROC REPORT DATA=CARS_SAMPLE NOWD SPLIT='*' HEADLINE HEADSKIP;
 	* <- Split is used to break the column label logically for display;
 	* <- HEADLINE is used to provide a dotted line below the column names, this affects only o/p window and not HTML report;
 	* <- HEADSKIP provide a space below the column label and its values, this affects only o/p window and not HTML report;
-	define Make/format=$CHAR8. width=3 spacing=10; * Width and spacing has its effect shown only in o/p window and not HTML window;
+	define Make/format=$CHAR8. width=8 spacing=10; * Width and spacing has its effect shown only in o/p window and not HTML window;
 	define Type/'Car*Type'; * Column label can be defined within ''. To control the word break we can use SPLIT;
 	define Model/center; * Default is left justify the char and right justify the numeric, center would centerise the values in column;
 	define Cylinders/order DESCENDING; * Data is ordered based on the column Cylinder, this is like grouping and odering, default ordering is ascending;
