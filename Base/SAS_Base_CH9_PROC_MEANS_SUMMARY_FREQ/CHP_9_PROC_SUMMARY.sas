@@ -25,4 +25,3 @@ VAR MSRP Invoice EngineSize Cylinders Horsepower MPG_City MPG_Highway Wheelbase 
 class TYPE;
 output mean=MSRP Length out=CARS_STATS_SUMMARY;
 RUN;
-
