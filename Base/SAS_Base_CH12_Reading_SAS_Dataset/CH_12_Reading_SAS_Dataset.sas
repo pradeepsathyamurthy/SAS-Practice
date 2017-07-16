@@ -56,12 +56,7 @@ DATA Work.SAS_DATASET7 Work.SAS_DATASET8;
 	set Clinic.Admit;
 	output Work.SAS_DATASET8; *Observations for SAS_DATASET7 will be 0, only variables would be created. However, SAS_DATASET8 is filled with observations;
 RUN;
-PROC PRINT DATA = Work.SAS_DATASET6;
+PROC PRINT DATA = Work.SAS_DATASET7;
 RUN;
-
-
-
-
-
-
-
+PROC PRINT DATA = Work.SAS_DATASET8;
+RUN;
