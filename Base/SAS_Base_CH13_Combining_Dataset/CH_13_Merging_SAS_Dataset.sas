@@ -80,7 +80,7 @@ RUN;
 
 * 3. Interleaving - Mutiple Mathching Observation for a unique value mentioned in BY - Single SET + BY statement - No Missing Value - No Values Skipped;
 * This is like a reveat, just join two data set with a common variable, it is a union of multiple dataset;
-* Thus provides multiple matching observation for a single observation in BY statement;
+* Important is => Thus provides multiple matching observation for a single observation in BY statement;
 * Data read based on the order of By Variables defined;
 PROC SORT DATA = A;
 	BY NUM;
@@ -90,6 +90,7 @@ PROC SORT DATA = C;
 	BY NUM;
 PROC SORT DATA = D;
 	BY NUM;
+RUN;
 
 DATA DATA_Interleave_Case1;
 	SET A C D;
