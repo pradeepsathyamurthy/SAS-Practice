@@ -13,3 +13,13 @@ RUN;
 PROC FREQ DATA=CARS_SAMPLE1;
 	tables TYPE;
 RUN;
+
+* Two way table;
+PROC FREQ DATA=CARS_SAMPLE1;
+	tables MAKE * TYPE;
+RUN;
+
+* Frequency table with 3 categorical variables variables;
+PROC FREQ DATA=CARS_SAMPLE1;
+	tables ORIGIN * MAKE * TYPE;
+RUN;
