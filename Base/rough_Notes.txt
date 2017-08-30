@@ -1,4 +1,6 @@
 Read about the Yearcutoff perfectly, you keep getting confused often
 Chapter-14 complete read through with practice
 Sum Variable and Retain
-
+Revise PORC Report
+memorize informats n formats (splly for dates)
+See how PDV works for DO Loop Iterations like DO i = 1 to 10; see what values PDV carry.
