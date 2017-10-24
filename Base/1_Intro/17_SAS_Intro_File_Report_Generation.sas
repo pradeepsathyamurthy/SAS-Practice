@@ -1,5 +1,5 @@
 /* This program explain how to write a simple report like file to disc */
-* Sales Example Write a report that totals sales from various cities;
+* Sales  Example Write a report that totals sales from various cities;
 
 * options is used to set the linesize, pagesize, etc., which will customize the output window of SAS;
 * this is needed because if we have to write data to ROM we need them in single page instead of break;
