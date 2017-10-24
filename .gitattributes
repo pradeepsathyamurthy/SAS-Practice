@@ -1,1 +1,3 @@
-*.sas linguist-language=SAS
+* linguist-vendored
+*.SAS linguist-vendored=false
+*.sas linguist-vendored=false
