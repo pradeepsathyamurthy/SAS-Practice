@@ -6,7 +6,7 @@ Guiding Prof: Prof. Steve Jost
 Project: Project-1
 Dataset Name: erie-marathon-2006.txt
 Variable of Interest for Project-1: ID, Place, Finisher, Final Time, Pace
-Topics Covered in project-1: 
+Topics Covered in project 1: 
 Data and Proc steps, title, label infile, input, scan, informat, options, format, put, files, header, subsetting if
 ******************************************************************************************************************/
 
