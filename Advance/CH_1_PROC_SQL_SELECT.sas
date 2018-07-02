@@ -26,20 +26,21 @@ QUIT;
 * Bonus of 80% of salary is the new derived column;
 * 'AS' key word can be used even as alias;
 PROC SQL;
-	SELECT EmpID,Gender,JobCode,Salary, (salary*0.8) as Bonus FROM SASUSER.PAYROLLMASTER;
+	SELECT EmpID,Gender,JobCode,Salary, (salary*0.8) as Bonus format=Dollar8. FROM SASUSER.PAYROLLMASTER;
 QUIT;
 
 * Subsetting or Filterring column;
+* Use WHERE Condition;
 PROC SQL;
 	SELECT EmpID,Gender,JobCode,Salary
 	FROM SASUSER.PAYROLLMASTER
 	WHERE Salary > 100000;
 QUIT;
 
-* Ordering the rows;
+* Ordering or sorting the rows;
 * 'ORDER BY' is used;
 * default ordering is ascending;
-* to order in descending order use DESC;
+* to order in descending order use DESC in the ORDER BY statement;
 PROC SQL;
 	SELECT EmpID,Gender,JobCode,Salary
 	FROM SASUSER.PAYROLLMASTER
@@ -75,11 +76,11 @@ QUIT;
 
 * Inner Join;
 * Quering multiple columns from multiple tables;
-* This is called SQL Join;
+* This is called SQL Join - that is joining the tables horizontally;
 * JOIN we do here inner join where column is joined based on a common column;
 * In this e.g. lets join 2 tabled SALCOMPS and NEWSALS;
 PROC SQL;
-	SELECT S.EmpID,S.LastName,S.Phone,S.JobCode,S.Salary,N.NewSalary
+	SELECT S.EmpID,S.LastName,S.Phone,S.JobCode,S.Salary format=Dollar8.,N.NewSalary
 	FROM SASUSER.SALCOMPS S, SASUSER.NEWSALS N
 	WHERE S.EMPID = N.EMPID
 	ORDER by S.LASTNAME;
@@ -102,6 +103,7 @@ QUIT;
 * Table style query;
 * In this below example we are trying to create a temporary table in WORK folder;
 * 'AS' keyword is used create the table data;
+* Table is one type of SAS dataset, once created same can be accessed using PROC SQL & even Proc step;
 PROC SQL;
 	* Create Table script;
 	CREATE TABLE WORK.TEMP_SALCOMP AS
@@ -119,10 +121,14 @@ PROC SQL;
 	SELECT * FROM WORK.TEMP_SALCOMP;
 QUIT;
 
+PROC PRINT DATA=WORK.TEMP_SALCOMP NOOBS;
+RUN;
+QUIT;
 
 * VIEW style query;
-* In this below example we are trying to create a temporary table in WORK folder;
-* 'AS' keyword is used create the table data;
+* In this below example we are trying to create a temporary view in WORK folder;
+* CREATE VIEW and 'AS' keyword is used create the view;
+* View is also one type of SAS dataset, once created same can be accessed using PROC SQL & even Proc step;
 PROC SQL;
 	* Create Table script;
 	CREATE VIEW WORK.TEMP_VIEW_SALCOMP AS
@@ -132,10 +138,13 @@ PROC SQL;
 	GROUP BY S.JOBCODE
 	HAVING TotalSal > 50000
 	ORDER BY TotalSal;
-
 	*Checking the table created;
 	SELECT * FROM WORK.TEMP_VIEW_SALCOMP;
+QUIT;
 
+* Validating the VIEW using PROC Step;
+PROC PRINT DATA=WORK.TEMP_VIEW_SALCOMP noobs;
+RUN;
 QUIT;
 
 /* Sample Practice, try to download the sample data frin Help menu */
