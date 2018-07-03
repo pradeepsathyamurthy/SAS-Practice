@@ -11,7 +11,8 @@
 
 * 1 Creating and Describing the tables;
 * CREATE TABLE is used to create a new table using PROC SQL;
-* PROC SQL Select is used to generate the reports and not datasets, if in case you need to convert this report to a dataset, we need to use create statements;
+* PROC SQL Select is used to generate the reports and not datasets, if in case you need to convert this report to a dataset;
+* we need to use CREATE statements;
 * DESCRIBE TABLE is used to explain the table and its contents interms of datatypes, column names and datatype length;
 * FORMAT goes hand in hand with column specification;
 * When it comes to Datatype in SAS, there are only 2 datatypes 1. NUMERIC and 2. CHAR;
@@ -27,6 +28,19 @@ PROC SQL;
 		EndDate num format=date9.,
 		Discount num);
 QUIT;
+* Need to be careful while inserting DATE values; 
+* Got to mention the classifier d for the date after the value;
+PROC SQL;
+	INSERT INTO work.discount
+	values('MAS','12May2018'd,'12Jun2018'd,21)
+	values('SBC','21Jul2018'd,'2Aug2018'd,31)
+	values('KAR','01Oct2018'd,'9Nov2018'd,45);
+QUIT;
+* Checking the values inserted, good practice to check the logs;
+PROC SQL;
+	SELECT * from work.discount;
+QUIT;
+
 * Describe Table;
 * This is like DESC in SQL;
 * PROC SQL will not generate o/p for empty tables;
@@ -34,14 +48,14 @@ QUIT;
 		1. one-level name filename
 		2. two level name libref.filename
 		3. physical pathname enclosed in '';
-* Multiple tables can be descrive at a time using one DESCRIBE statement;
+* Multiple tables can be described at a time using one DESCRIBE statement;
 * If any index attached even they get displayed using DECRIBE TABLE statement;
-* PROC CONTENTS can be used as alternative, but this will generate report and not the SAS log;
+* PROC CONTENTS can be used as alternative, but this will generate report and not in the SAS log;
 PROC SQL;
 DESCRIBE TABLE work.discount;
 
 * There are 3 methods to create a table;
-* 	1.1. Creating an Empty table
+* 	1.1. Creating an Empty table - only CREATE TABLE
 	1.2. Empty table with column structure and no rows - LIKE key word is used
 	1.3. Table with columns and rows populated - AS key word is used;
 * let us duscuss these in detail;
@@ -65,7 +79,7 @@ PROC SQL;
 		Discount num label='Discounted Price');
 * Always have an habit to check the log;
 * By default if the libref is not given all tables will be created under WORK library;
-* To create permanent table create LIBREF;
+* To create permanent table use LIBREF;
 
 * 1.2. Creating an empty table that is like another table - use LIKE keyword;
 * LIKE keyword is used;
@@ -88,7 +102,7 @@ PROC SQL;
 	LIKE SASUSER.Acities;
 QUIT;
 PROC SQL;
-DESCRIBE TABLE work.Acities;
+DESCRIBE TABLE work.Acities1;
 QUIT;
 
 * 1.3. Creating a table from a query results;
@@ -100,7 +114,7 @@ PROC SQL;
 QUIT;
 * Using AS properly;
 * In this if we derive any collumn which is not existing in table and forget to give it a name, sas will automatically provide a name for it;
-* When a query like SELCT or inline view is used with create table statement, focus is only on CREATING the table and not the report generation;
+* When a query like SELECT or inline view is used with create table statement, focus is only on CREATING the table and not the report generation;
 * Below is the method to even copy the whole table, using SELECT * instead of SELECT <some col names>;
 PROC SQL;
 	CREATE TABLE WORK.ACITIESFILLED
@@ -113,7 +127,8 @@ QUIT;
 * You can insert rows in 3 different ways:
 	2.1 Inserting one observation at a time - SET is used
 	2.2 Inserting many observation at a time - VALUES is used
-	2.3 Inserting observations through query - SELECT is used;
+	2.3 Inserting observations through query - SELECT is used
+	2.4 INserting Date values into table;
 * Lets us look into this in detail;
 * 2.1. Iserting one observation at a time, that is inserting column value individually and when the data is new;
 * SET operator deals with NAME:VALUE pair;
@@ -170,8 +185,17 @@ PROC SQL;
 	SELECT * from work.acities where code in('DEL','CHD','PUN');
 QUIT;
 
+* 2.4. Need to be careful while inserting DATE values; 
+* Got to mention the classifier d for the date after the value;
+PROC SQL;
+	INSERT INTO work.discount
+	values('MAS','12May2018'd,'12Jun2018'd,21)
+	values('SBC','21Jul2018'd,'2Aug2018'd,31)
+	values('KAR','01Oct2018'd,'9Nov2018'd,45);
+QUIT;
+
 * 3. Intergrity Constraint (IC);
-* IC isused to:
+* IC is used to:
 	1. Maintain Validity 
 	2. Consistency in data values;
 * PROC DATASET can be used to add IC, but they can be used for existing tables/dataset;
@@ -196,7 +220,7 @@ QUIT;
 	* CHECK(EXPR) - Col Value should satisfy this expression;
 	* DISTINCT/UNIQUE - Col Value must be Unique;
 	* NOT NULL - Col Value should not be NULL;
-	* PRIMARY KEY - Col value must be unique and not missing;
+	* PRIMARY KEY - Col value must be unique and not null;
 	* REFERENCE <TableName> <ON UPDATE/On DELETE> <IC Action>;
 	*Table Name here is the table which has PK;
 	* ON DELETE and ON UPDATE = These are triggering scenarios when referential action occurs;
@@ -206,6 +230,7 @@ QUIT;
 		SET NULL - SET all matching FK to NULL;
 	* when an IC is created as part of Column specification then SAS will automatically name it;
 	* default Index naming will be like _CKxxxx_, _FKxxxx_, _NMxxxx_, _PKxxxx_, _UNxxxx_ and counter begins from 0001;
+* Creating a PRIMARY KEY and CHECK constraint using column specification;
 PROC SQL;
 	CREATE TABLE WORK.ACITIES3(
 		city char(10) Primary Key,
@@ -245,7 +270,7 @@ QUIT;
 * When there is a constraint and when one row in insert fails due to some IC, then whole insert from the table is rollbacked;
 * If we wish to insert or update rows which PASS IC and ignore those have issues UNDO_POLICY should be declared in PROC SQL;
 * There are 3 types in UNDO_POLICY they are:
-	1. REQUIRED - This is the default, Perfrom a rollback if IC is not met even by one row, if rollback cannot be done reliable PROC SQL will not get executed and will throw error
+	1. REQUIRED - This is the default, Perform a rollback if IC is not met even by one row, if rollback cannot be done reliable PROC SQL will not get executed and will throw error
 	2. NONE - DATA which are good get updated or inserted and WARNING is thrown for those which get failed.
 	3. OPTIONAL - Perform UNDO, if not possible then no UNDO is attempted;
 * UNDO_POLICY do not work for data accessed through SAS/SHARE server and changes made through SAS/ACCESS servers;
