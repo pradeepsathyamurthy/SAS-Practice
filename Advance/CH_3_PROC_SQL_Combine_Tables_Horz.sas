@@ -172,6 +172,7 @@ PROC SQL;
 RUN;
 
 * 4. Outer Join;
+* LEFT JOIN, RIGHT JOIN, FULL JOIN + ON;
 * It return Inner Join + additional non matching rows from one or more tables based on condition;
 * thus it is an augumentation of inner join;
 * Outer join can be performed only on 2 tables or views at a time;
@@ -238,6 +239,9 @@ PROC SQL;
 QUIT;
 
 * 5. Comparing SQL Join and Data Step Match-Merge;
+* MATCH MERGE = PROC SQL INNER JOIN (only when all row matches with a column name)
+* MATCH MERGE = PROC SQL FULL OUTER JOIN + COALESCE (when the rows doesnt match each other)
+* MERGE + BY;
 * Data step match merge functionality and PROC SQL join does the same functionality in merging multiple tables horizontally;
 * Main difference is Match-merge need data to be sorted based on collumn that is been used to merge;
 * Also match merge created dataset while PROC SQL will create Report;
