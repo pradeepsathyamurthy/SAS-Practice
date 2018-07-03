@@ -42,14 +42,14 @@ QUIT;
 /* 1. Under standing SET Operation */
 * SET operation is used to join two or more tables vertically;
 * These are comparitively efficient when compare to other SAS SET methods;
-* SET Statement goes between two select statement;
+* SET Operator goes between two select statement;
 * SET staments can also be used to form a virtual queary that be used to temporarily fetch data;
 * There are 4 main SET operators in PROC SQL;
 * 	1. EXCEPT - Produce Unique record from table1 whose data are not in table2 and overlay by position
 	2. Intersect - Produce Unique records whose data are common between table1 and table2, it also overlay columns by position
 	3. Union - Produce all Unique records from table 1 and table2, overlays based on position
 	4. Outer Union - Produce all recrods from table1 and table 2 and doesnt overlay the columns;
-* Generally PROC SQL which has SET statement have 2 passes;
+* Generally PROC SQL which has SET operator have 2 passes;
 * 	1. To Remove duplication 
 * 	2. TO look for overlay;
 * In addition to this there are 2 SET parameters called as:
@@ -58,7 +58,7 @@ QUIT;
 * ALL and CORR can be used individually or even together based on the set operation we like to build;
 
 /* 2. EXCEPT set operator */
-* Set operator like EXCEPT overlay column by default, it is not necesary both tables should have same number or same column names;
+* Set operator like EXCEPT overlay column by default, it is not necesary both tables should have same number of rows or same column names;
 * Column from Table-1 overlays the column in Table-2, if there is column name defined in table-1 it is used, else column name from table-2 is used;
 * Remember this is a whole large select statement, semicolon comes only after all select statement with set operator is defined;
 PROC SQL;
