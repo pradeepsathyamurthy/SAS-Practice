@@ -2,6 +2,7 @@
 
 * 1. Way-1: Understanding Session compiled Macros;
 * These are temporary macros, which are created and destroyed in a single SAS session;
+* Macros are generally stored in a catalog;
 * These macros are stored in SAS Catelog with name work.sasmacr.<macro_name>.macro by default;
 * This is a temporary SAS catelog and macro that resides here are called session compiled macros;
 %MACRO macro1;
@@ -14,6 +15,7 @@ PROC SORT DATA=SASUSER.courses;
 RUN;
 * executing the macros;
 %macro1
+* This macro is created under a catalog which is created under the WORK library;
 * This macro macro1 is a temporary session compiled macro, it exist only till this current SAS session;
 * Once this SAS session is closed this macro and the temporary catelog where it is stored is also destroyed;
 
@@ -29,14 +31,15 @@ RUN;
 %macro2
 
 * 3. Way-3: Storing Macro Definitions in Catalog Source Entries;
+* Remember, you first have SAS Library ( this is like a folder or pointer to a folder) > SAS Catalog > SAS Macro;
 * It is another way of permanently storing the macros;
 * It is about storing a macro definition in a SOURCE entry in a SAS Catelog;
 * Must store each macro program in a seperate SOURCE entry;
 * Give each SOURCE entry the same name as the macro program;
 * SAS catelogs are member of SAS data libraries;
 * Use File > Save as Object to store macro definition as a SOURCE entry in SAS catelog;
-* For e.g. I first created a SAS Catelog named MYMACS;
-* Later I created MACRO1.SOURCE file in MYMACS catelog;
+* For e.g. I first created a SAS Catelog named MYMACS inside SASUSER library;
+* Later I created MACRO3.SOURCE file in MYMACS catelog;
 * This will create you a file named SASUSER.MYMACS.MACRO3.SOURCE, this is called as my catelog source entry;
 * So the format is libref.catalog.entry.source;
 * When the SOURCE entry is called MACRO gets compiled, if any changes done to macro, then it needs to be recompiled to get the change reflected;
@@ -52,10 +55,11 @@ quit;
 
 * 3.2. CATALOG access method;
 * below SAS program shows how to access a SOURCE entry in a catalog;
+* For this you need to have a file reference;
 * FILENAME <fileref> CATALOG <catalog entry> statement is used in conjection with %INCLUDE to insert macro definition into a SAS program;
-* Remember FILENAME is not a macro keyword;
+* Remember FILENAME is not a macro keyword, it is a fileref declation;
 FILENAME prady CATALOG 'SASUSER.MYMACS.MACRO3.SOURCE';
-%INCLUDE prady;
+%INCLUDE prady;* This will compiile the macro3.source in above mentioned catalog and stores its compiled code in work.sasmacr catalog;
 %macro3
 
 * 3.3. Accessing multiple SOURCE entry stored inside a same catalog;
@@ -71,7 +75,7 @@ FILENAME prady CATALOG 'SASUSER.MYMACS';
 * 4. Way-4: Storing Macro using AutoCall Facility;
 * Can make macro accessable to current SAS session using AUTOCALL facility;
 * AUTOCALL facility search for predefined source libraries for macro definition;
-* As the name implies, it is the call dont automtically to access the necessary libraries which are predefined;
+* As the name implies, it is the call done automtically to access the necessary libraries which are predefined;
 * this predefined source libraries are called AUTOCALL LIBRARIES;
 * MACROS can be stored permanently in AUTOCALL library;
 * NO need to compile the macro to make it available for execution;
@@ -110,7 +114,7 @@ FILENAME prady CATALOG 'SASUSER.MYMACS';
 * SASAUTOS = used to identify the location of autocall library;
 * MAUTOLOCDISPLAY | NOMAUTOLOCDISPLAY, in this NOMAUTOLOCDISPLAY is the default;
 * MAUTOLOCDISPLAY is a boolean option, it will display the Note in sas log saying the path from which the autocall library was derived;
-* Good coding practice is to create any new user defined macros also into sasautos instead os creating one as all SAS default macros are stored here only;
+* Good coding practice is to create any new user defined macros also into sasautos instead of creating new one, as all SAS default macros are stored here only;
 * These are SAS system OPTIONS;
 OPTIONS mautosource SASAUTOS=(sasautos,'C:\Users\prade\Documents\My SAS Files\9.4','D:\Courses\SAS\SAS-Practice\Advance\sas_autocall_dir');
 OPTIONS MAUTOLOCDISPLAY;
@@ -126,6 +130,7 @@ OPTIONS MAUTOLOCDISPLAY;
 %macro4
 
 * 5. Way-5: Using Stored Compiled Macros;
+* I think this is something genrally used in productions;
 * When a macro is compiled, it is stored in the temporary SAS catalog work.sasmacr by default;
 * Can also store compiled macro in a permanent SAS catalog;
 * Advantages of using stored compiled macros:
@@ -163,6 +168,7 @@ OPTIONS MSTORED SASMSTORE=prady1;
 * On executing the above code, since there was no Sasmacr in my libref, Sasmacr catalog gets created;
 * Inside this Sasmacr catalog we can find the macro named Macro5 in the compiled state;
 * Same can be verified using the PROC CATALOG method;
+libname prady1 'D:\Courses\SAS\SAS-Practice\Advance\stored_compiled_macro';
 PROC CATALOG cat=prady1.Sasmacr;
 	contents;
 RUN;
@@ -174,6 +180,8 @@ QUIT;
 	2. Set MSTORED and SASMSTORE=libref in SAS OPTIONS	
 	3. call the macro;
 * Only one permanent catalog containing compiled macros can be accessed at any given time;
+* Since we are trying to execute the compiled macro directly, we dont get a copy of compiled code in work.Sasmacr;
+* This is direct execution from compiled code available from libref;
 libname prady1 'D:\Courses\SAS\SAS-Practice\Advance\stored_compiled_macro';
 OPTIONS MSTORED SASMSTORE=prady1;
 %macro5
