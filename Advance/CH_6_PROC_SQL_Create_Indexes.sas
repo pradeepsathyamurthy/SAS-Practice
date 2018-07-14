@@ -1,4 +1,5 @@
 /* Chapter-6: Creating and Managing Indexes */
+* Revision Time: 15 to 20 Mints;
 * Index is used to Locate a row quickly and improve efficiency;
 * It is like a book index;
 * Index is an auxilary (suplimentry) file which stores the physical location of one or more column values;
@@ -7,20 +8,22 @@
 * Index cannot be created on Views;
 * Below is a simple index;
 PROC SQL;
+	CREATE TABLE work.Acities as
+		select * from sasuser.acities;
 	CREATE INDEX city
-	on work.Acities(city);
+		on work.Acities(city);
 	DESCRIBE TABLE ACITIES;
 QUIT;
 
 * 1. Understanding Index;
 * Without index PORC SQL will access each row sequentially;
 * Index = Value:Identifier pair;
-* It stores UNique values of a column in ascending order and also stored the information about the location;
+* It stores UNique values of a column in ascending order and also stores the information about the location;
 * This functionality allows PROC SQL to access a row directly by values;
 * Using Index PORC SQL can access ROWS direcly;
 * There are 2 types of Index:
 	1. Smple Index - Index based on one column. Name of the column on which Simple index created will be the index name as well
-	2. Composite Index - Index Based on moret than one column. Composite Index name should be Unique, not the existing index or col names;
+	2. Composite Index - Index Based on more than one column. Composite Index name should be Unique, not an existing index or col names;
 * Unique Index impose the Unique Integrity Constraints on indexing;
 * Unique Index can be applied to both Simple and Composite Index;
 * Below is a composite index;
@@ -40,7 +43,7 @@ QUIT;
 * Always weigh performance improvement over the cost and decide if index should be created or not;
 * Remember that there is a cost associated with: Creating, Storing and Maintaining an index;
 
-* 3. Clauses which makes a good use of INdex;
+* 3. Very Important - Clauses which makes a good use of Index;
 * Below clause performances can be improved with Index:
 	3.1. WHERE - Using TRIM, SUBSTR, CONTAIN and LIKE makes a big use of any available index
 	3.2. IN - This operator along with Subqueries makes big use of index
@@ -49,9 +52,9 @@ QUIT;
 
 * 4. When are Index useful
 	4.1. When the sample size we query for a table is small (15% of total table size)
-	4.2. When Col references different values at a given time
+	4.2. When Col references different values at a given time (I dont understand this point)
 	4.2. When EquiJoin is performed without internal SORT
-	4.3. Uniquness can be enforced;
+	4.3. Uniqueness can be enforced;
 
 * 5. Cost of Using INdex
 	5.1. Additional Memory
@@ -70,7 +73,7 @@ QUIT;
 	6.8. Index live untill the Table is recreated and column on which index built is dropped
 	6.9. You cannot create more than one simple index on a same column
 	6.10. One Simple and One Composite Index can be created on a same column but it is useless
-	6.11. Can create multiple index on same table with seerate create index statement
+	6.11. Can create multiple index on same table with seperate create index statement
 	6.12. All indexes of a table is stored in one Index file;
 
 * 7. Index Usage
@@ -99,4 +102,5 @@ PROC SQL;
 	Use DROP INDEX <Index_name> FROM <table_name>;
 PROC SQL;
 	DROP INDEX city_code from work.acities;
+	DESCRIBE TABLE work.acities;
 QUIT;
