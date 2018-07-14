@@ -1,4 +1,5 @@
 /* Chapter-7: Creating and Managing Views */
+* Total Revision Time: 20 to 25 Mints;
 * Views are stored query expression, they are created from
 	1. SAS Data File
 	2. Dataset Views
@@ -7,8 +8,8 @@
 View derives its data from tables or views
 Data accessed by Views are either subset or superset of the data that is in the underlying table;
 
-* 1. Craeting PROC SQL Views;
-* 	Views contain only logic for accessing the data and not the data itself
+* 1. Creating PROC SQL Views;
+* 	Views contain only logic (in query form) for accessing the data and not the data itself
 	It is called the virtual table, It is like a window to the table
 	View is also considered as one of the SAS Dataset type
 	It is used to:
@@ -21,8 +22,9 @@ Data accessed by Views are either subset or superset of the data that is in the 
 * When a view is created there is no reports gets generated;
 * Just the code is compiled and stored in system;
 * Default view extension in SAS is .sas7bvew;
+* Default library is the Work library;
 PROC SQL;
-	CREATE VIEW work.acities
+	CREATE VIEW acities
 	as
 	SELECT * from sasuser.acities;
 QUIT;
@@ -37,17 +39,21 @@ PROC SQL;
 SELECT * from work.Acities;
 QUIT;
 * Views once created can be used in other PROC or Data steps;
+PROC PRINT DATA=work.Acities(obs=5);
+RUN;
 
 * 3. Describing the definition of a view;
-* DESCRIBE VIEW is used to displye the definition of a view in SAS log;
+* DESCRIBE VIEW is used to display the definition of a view in SAS log;
 * This will logically disply the select query used to create the view in SAS log;
 PROC SQL;
 	DESCRIBE VIEW work.acities;
 QUIT;
 * If we build a view from a view instead of a table basically, and if we need to see the definition of parent view we use FEEDBACK;
 * FEEDBACK is a PROC SQL option;
+* Generally used for debugging;
 PROC SQL FEEDBACK;
 	DESCRIBE VIEW work.acities;
+	SELECT * from work.Acities;
 QUIT;
 
 * 4. Managing the PROC SQL Views;
