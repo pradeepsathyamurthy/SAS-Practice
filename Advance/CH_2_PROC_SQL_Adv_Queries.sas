@@ -1,4 +1,7 @@
-* * operator;
+* Chapter-2: Performing Advance Queries using PROC SQL;
+* Average Revision time for this chapter is 25 to 30 mints;
+
+* 1. star operator;
 /* Using the simple * operator to select all rows */
 PROC SQL;
 	SELECT * FROM SASUSER.PAYROLLMASTER;
@@ -24,8 +27,8 @@ QUIT;
 
 * CONTAINS = It list all the string which contains a particular pattern;
 * CONTAINS can be used only on the Character columns and not on Numeric column;
-* It look for the character combination mentioned after CONTAINS anywhere in the column value;
-* For e.g. if we seach for values thatcntain 'ME' and values in col are 'AME', 'MEA', 'ABMEA', then all these value gets listed;
+* It look for the character combination mentioned after CONTAINS statement anywhere in the column value;
+* For e.g. if we seach for values that contains 'ME' and values in col are 'AME', 'MEA', 'ABMEA', then all these value gets listed;
 * Search is case sensitive, that is SAS search based on the case given in '';
 PROC SQL;
 	SELECT JOBCODE FROM SASUSER.PAYROLLMASTER
@@ -72,7 +75,7 @@ PROC SQL;
 	WHERE JOBCODE LIKE 'P%';
 QUIT;
 
-* =* this is a sounds like operator, it picks all values which counds like them;
+* =* this is a sounds like operator, it picks all values which sounds like them;
 * It works on SOUNDEX algorthm;
 * Biased to only English language for now;
 * works on the sound of the syllabels;
@@ -95,10 +98,12 @@ QUIT;
 * FootNote = Used to provide the foot note to the Proc SQL;
 * Label = Used to provide a label or a column alias;
 * Format = Mention the SAS Format;
-* For a col all these label and format definitions must be placed consiqutively before defining next column using , comma;
+* Remember every formatting keyword is followed by = that is FORMAT=, LABEL=, etc.,;
+* For a col specification all these label and format definitions must be placed consiqutively;
+* Next column specifications are defined using , comma;
 * for e.g. Select Col1 label='label1' format=DOLLAR8., Col2, col3 label 'label3' from tablename where condition;
 * do not forget to use = while defining a label or a format;
-* title and footnote can be given before and after PROC SQL but not inside a SQL clauses;
+* title and footnote can be given before and after PROC SQL but not inside a SELECT or other SQL clauses;
 PROC SQL;
 	title 'Sample formatting';
 	footnote 'done!!!';
@@ -129,7 +134,7 @@ PROC SQL;
 	HAVING Avg_Salary > 50000;
 QUIT;
 
-/* Count(*) = Count of all not null values, that is all rows with no NULL values in even a single column */
+/* Count(*) = Count of all not null values, that is all rows with no NULL values in even a single column of an observation*/
 PROC SQL;
 	SELECT count(*) as Total_Rows from SASUSER.PAYROLLMASTER;
 QUIT;
@@ -174,21 +179,21 @@ PROC SQL;
 QUIT;
 /* ALL */
 /* It will choose only if all of the result returned by subquery matches the condition, then parent query will be executed */
-/* Can also use Max(dateofbirth) function  for efficient coding */
+/* Can also use Min(dateofbirth) function  for efficient coding */
 PROC SQL;
 	SELECT * from SASUSER.PAYROLLMASTER
 	where jobcode in ('FA', 'FA2') and dateofbirth < all
 	(select dateofbirth from sasuser.payrollmaster where jobcode='FA3');
 QUIT;
 
-/* Sunsetting data using correlated sub-queries*/
+/* Subsetting data using correlated sub-queries*/
 /* Child query depends on the parent queary */
 /* Remember JOIN is the most efficient alternative to a correlated sub-query */
 /* EXIST - Sub-query Returns atleast one row */
 /* NOT EXIST - sub-query returns no data */
 * You can use this in both where or having clause;
 * You should be using not exist like, lets say there are two tables with some interaction of data;
-* So if we need data from one table which is not existing in interaction ot another table (that is data only from set1-interaction term) is called Non-Existance;
+* So if we need data from one table which is not existing in interaction of another table (that is data only from set1-interaction term) is called Non-Existance;
 PROC SQL;
 	SELECT * from sasuser.flightattendants 
 	where not exists
@@ -202,8 +207,7 @@ QUIT;
 * VALIDATE will only affect the SQL statement which is next after it, thats it;
 * Thats why the statement start with VALIDATE followed by SQL stmt and ends with semicolan;
 PROC SQL;
-VALIDATE
-SELECT * FROM sasuser.flightattendants;
+VALIDATE SELECT * FROM sasuser.flightattendants;
 QUIT;
 
 *Stopping execution;
