@@ -1,4 +1,5 @@
 /* Chapter-5: Creating and Managing Tables */
+* Revision Time is: 50 to 55 mints;
 * Here we will discuss on how to:
 	1. Create and Describe
 	2. Inserting Rows to a table
@@ -18,7 +19,7 @@
 * When it comes to Datatype in SAS, there are only 2 datatypes 1. NUMERIC and 2. CHAR;
 * PROC SQL expose 10 datatypes which are internally converted to either CHAR or Numeric during compilation stage of SAS;
 * CHAR, VARCHAR, NUMERIC, DECIMAL, FLOAT, REAL, DOUBLE PRECISION, INTEGER, SMALLINT and DATE;
-* Also, Data type length can be defined only for CHAR columns and not for any of the numeric columns;
+* Also, Datatype length can be defined only for CHAR columns and not for any of the numeric columns;
 * This is because for all Numeric columns the default length is set to 8 bytes;
 * Create Table;
 PROC SQL;
@@ -51,6 +52,7 @@ QUIT;
 * Multiple tables can be described at a time using one DESCRIBE statement;
 * If any index attached even they get displayed using DECRIBE TABLE statement;
 * PROC CONTENTS can be used as alternative, but this will generate report and not in the SAS log;
+* DESCRIBE will print the create table script in SAS LOG;
 PROC SQL;
 DESCRIBE TABLE work.discount;
 
@@ -58,7 +60,7 @@ DESCRIBE TABLE work.discount;
 * 	1.1. Creating an Empty table - only CREATE TABLE
 	1.2. Empty table with column structure and no rows - LIKE key word is used
 	1.3. Table with columns and rows populated - AS key word is used;
-* let us duscuss these in detail;
+* let us discuss these in detail;
 * 1.1. Creating an Empty Table;
 * Main thing to note is the column specification, it consist of:
 	Column Name
@@ -131,7 +133,7 @@ QUIT;
 	2.4 INserting Date values into table;
 * Lets us look into this in detail;
 * 2.1. Iserting one observation at a time, that is inserting column value individually and when the data is new;
-* SET operator deals with NAME:VALUE pair;
+* SET operator deals with NAME=VALUE pair;
 * Seperate SET caluse is used for each rows;
 * Remember you dont need to repeat INSERT INTO multiple time as you do in SQL;
 PROC SQL;
@@ -148,7 +150,8 @@ QUIT;
 * If a column value is unknown you can ignore it and SAS will fill it with missing values . or '' for Numeric and char resp;
 * It is a good practice to have Column:Value pair in order to increase productivity;
 PROC SQL;
-INSERT INTO WORK.ACITIES(city, code, name, country) SET
+INSERT INTO WORK.ACITIES(city, code, name, country) 
+	SET
 	city='Bangalore',
 	code='SBC',
 	name='Kempegowda International Airport',
@@ -162,7 +165,7 @@ QUIT;
 
 * 2.2. Inserting Rows by using the Values clause;
 * It is VALUES and not VALUE;
-* Used to insert multiple list of rows to the table;
+* Used to insert multiple list of rows/observations to the table;
 * Order is important, should be according to table structure;
 * Better to provide a optional column list and then list the values in same order as per optional columm;
 * If value is unknown those columns neednot be specified, will be auto filled by SAS as missing values . or '' for Numeric and char resp;
@@ -204,14 +207,14 @@ QUIT;
 * Can describe the constrains using DESCRIBE TABLE CONSTRAINT <table_name> will list all constraints associated with that table;
 * There are generally 2 types of constrains in SAS PROC SQL:
 	1. Generic IC - THese involve only one table
-		1. CHECK - Contraint to ensure a value based-on/within a range or an expression 
+		1. CHECK - Contraint to ensure a value based-on/within a range or a WHERE expression 
 		2. NOT NULL - Not allow missing values
 		3. UNIQUE/DISTINCT - Not allow duplicate values and ensures values are unique
 		4. PRIMARY KEY - Unique + NotNull, there can be only one PK for a given table
 	2. Referential IC - These involves 2 tables
 		5. REFERENCES - Define PK in one table and then define Forign key in second table and its action includes
 			1. CASCADE - Update the Primary Key and do necessary changes to FK accordingly
-			2. RESTRICT (default) - Doest allow PK to change instead through error
+			2. RESTRICT (default) - Doesn't allow PK to change instead through error
 			3. SET NULL - Set the FK column as NULL;
 * IC are only for tables and not for views;
 * IC are applied only for newly created data that comes in and not for existing ones;
@@ -275,7 +278,7 @@ QUIT;
 	3. OPTIONAL - Perform UNDO, if not possible then no UNDO is attempted;
 * UNDO_POLICY do not work for data accessed through SAS/SHARE server and changes made through SAS/ACCESS servers;
 * UNDO_POLICY stays for complete SAS session untill RESET is done on PROC SQL;
-* UNDO_POLICY is an option to PROC SQL, whcih instruct what should happen when IC fails;
+* UNDO_POLICY is an option to PROC SQL, which instructs what should happen when IC fails;
 * Generally 2 NOTES are created in logs:
 	Note1: Says which value stmt fails
 	Note2: Talks about the effect of UNDO_POLICY in code;
@@ -322,7 +325,7 @@ QUIT;
 * Method-2: can use UPDATE - SET - CASE - WHEN - THEN - ELSE - END statement;
 * One WHEN clause will return just one value only to the case statement, this value is accordingly used;
 * CASE statement can be used in SELECT-UPDATE-INSERT;
-* ELSE clause in CASE statement is optional but it is a good practice to use it, if you dont use else then non-matching columns will be updated with missing values;
+* ELSE clause in CASE statement is optional but it is a good practice to use it, if you dont use 'else' then non-matching columns will be updated with missing values;
 * Below program update the table wrongly with missing values;
 PROC SQL;
 	UPDATE WORK.ACITIES
@@ -370,10 +373,11 @@ RUN;
 				* cannot typecast the datatype using MODIFY nor change the column name, for this used PROC DATASET - RENAME;
 * These are not enclosed in ();
 * Multiple col definition can be done by seperating each with ,;
+* Be careful while using CHAR format, its informat definition is like $CHAR5. and not CHAR5.;
 PROC SQL;
 	ALTER table ACITIES
 		ADD price num,profit num
-		modify code format=char22. city format=char22.
+		modify code format=$char5., city format=$char5.
 		drop country;
 QUIT;
 
