@@ -3,6 +3,8 @@
 	This is a practice on PROC SQL command
 	This Chapter deals with basic SQL query */
 
+* Average Revise time for this topic should be between 10 and 15 mints;
+
 * These PROC SQL statements do not need RUN statement in last;
 * However, it is a good coding practice to use QUIT whenever a PROC SQL procedure is used in SAS;
 
@@ -49,7 +51,7 @@ PROC SQL;
 QUIT;
 
 * Default sorting is ASC;
-* To default it in Descending order, need to use DESC clause;
+* To order by in Descending order, need to use DESC clause;
 PROC SQL;
 	SELECT EmpID,Gender,JobCode,Salary
 	FROM SASUSER.PAYROLLMASTER
