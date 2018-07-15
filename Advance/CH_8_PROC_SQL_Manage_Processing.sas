@@ -37,22 +37,39 @@ PROC SQL INOBS=5;
 	OUTER UNION CORR
 	SELECT * FROM SASUSER.mechanicslevel2;
 QUIT;
+* OUTOBS - All records are read from each table but finally only mentioned number of rows get printed;
+PROC SQL OUTOBS=5;
+	SELECT * FROM SASUSER.mechanicslevel1
+	OUTER UNION CORR
+	SELECT * FROM SASUSER.mechanicslevel2;
+QUIT;
 
 * 2.2. PROMPT | NOPROMPT - These are used to mention SAS to PROMPT when any of the above PROC SQL option is used;
 * User is prompted to stop or continue processing when file limit set by these options are reached;
 * Prompt dialogue box appear, you can either stop or continue the execution;
 * PROMPT - prompts user to see if SAS should proceed or stop procesing the stmt;
 * NOPROMPT - Doesnt PROMPT the user;
-PROC SQL INOBS=5 PROMPT;
+* Be clear on how PROMPT works;
+* In the below query, PROMPT is applied to each SQL, first PROMPT is done for table mechanicslevel1;
+* Either when we hit Stop or when all record from table1 is read, PROMPT gets activated for table2;
+PROC SQL INOBS=2 PROMPT;
 	SELECT * FROM SASUSER.mechanicslevel1
 	OUTER UNION CORR
 	SELECT * FROM SASUSER.mechanicslevel2;
 QUIT;
+* PROMPT at individual level;
+* Even in the below query PROMPT is applied for each SQL statement, first all prompts are for mechanicslevel1 table;
+* After we hit Stop, PROMPT gets activated for mechanicslevel2;
+PROC SQL INOBS=2 PROMPT ;
+SELECT * from SASUSER.mechanicslevel1;
+SELECT * from SASUSER.mechanicslevel2;
+QUIT;
 
 * 3. Controlling the Output;
 * 3.1. NUMBER|NONUMBER is one of the output control option;
-* NONUMBER is the default;
-* These are similar to OBS and NOOBS options in print procedure;
+* NONUMBER is the default for PROC SQL;
+* These are similar to OBS and NOOBS options in PROC print procedure;
+* Remember OBS and NOOBS are not valid PROC SQL options, use either NUMBER or NONUMBER;
 PROC SQL NUMBER;
 	select * from sasuser.acities;
 QUIT;
@@ -68,7 +85,7 @@ QUIT;
 * FLOW|NOFLOW or FLOW=n or FLOW=n m options affect how word wrap should behave in SAS output;
 * Again this is only for SAS output and not ODS report;
 * FLOW this will just make the column to flow in its column instead of wrapping the whole row;
-* FLOW=n will set the width of the specific column, any length more than that wil be wrapped;
+* FLOW=n will set the width of the specific column, any length more than that wil be wrapped to next row but confined within same column width;
 * FLOW=n m will make the width to float between limits of n and m to acheive a balanced output;
 * Below program without FLOW;
 PROC SQL INOBS=5;
@@ -114,7 +131,9 @@ QUIT;
 PROC SQL;
 	select flightnumber, destination from sasuser.internationalflights;
 QUIT;
-* See how RESET works;
+* See how RESET works and observe the additive behaviour;
+* For first select statement only OUTOBS is applied;
+* For second select statement both OUTOBS + NUMBER is applied;
 PROC SQL outobs=5;
 	select flightnumber, destination from sasuser.internationalflights;
 RESET NUMBER;
@@ -149,7 +168,7 @@ PROC SQL;
 	DESCRIBE TABLE dictionary.tables;
 QUIT;
 
-* 6.1 Dictionary.tables - Finding tables assiciated to a library;
+* 6.1 Dictionary.tables - Finding tables associated to a library;
 * Let us create some sample tables in WORK library;
 * Dictionary tables are dynamic, based on values its structure changes;
 PROC SQL;
@@ -165,8 +184,8 @@ QUIT;
 * below shows the SAS Object name(like table names), Object type(like table, views), nobs (number of observation the obj carries), libname(library under which obj is stored);
 * Results are obtained as ODS reports;
 PROC SQL;
-	SELECT memname, memtype, nobs, libname from dictionary.tables
-	where libname='SASUSER';
+	SELECT memname, memtype, nobs, libname from dictionary.tables where libname='SASUSER';
+	SELECT memname, memtype, nobs, libname from dictionary.tables where libname='WORK';
 QUIT;
 
 * 6.2. Dictionary.columns - To find the tables for a specified column;
@@ -179,15 +198,14 @@ QUIT;
 * More important is the name (column name), type, length, etc;
 * below list the library, tables associated to the lib and columns those tables has;
 PROC SQL;
-	SELECT libname, memname, memtype, name from dictionary.columns
-	where libname='SASUSER';
+	SELECT libname, memname, memtype, name from dictionary.columns where libname='SASUSER';
+	SELECT libname, memname, memtype, name from dictionary.columns where libname='WORK';
 QUIT;
-* If we just need infor about a column name and need to know in which table it exists, we can fire below query;
+* If we just need info about a column name and need to know in which table it exists, we can fire below query;
 * Below query will list all the tables from all the libraries which has a column City in it;
 * Values provided for search in WHERE clause is case sensitive, i.e. 'City' is different from 'city';
 PROC SQL;
-	SELECT libname, memname, memtype from dictionary.columns
-	where name='City';
+	SELECT libname, memname, memtype from dictionary.columns where name='City';
 QUIT;
 * very important - Similar results can be obtained by reffering to Sashelp library too;
 * Dictionary tables can only be accessed using PROC SQL;
