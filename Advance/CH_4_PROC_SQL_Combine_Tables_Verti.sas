@@ -149,7 +149,7 @@ QUIT;
 * Be very careful with this ALL + CORR operator output, try to understand well;
 * ALL will allow duplicate;
 * CORR or corresponding operator is used to overlay the column based on Column name and not position;
-* Duplicate with overlaying based on column name occurs;
+* Duplicate with overlaying based on column name using one to one mapping of each element occurs here;
 PROC SQL;
 	SELECT * from One
 	INTERSECT ALL CORR
