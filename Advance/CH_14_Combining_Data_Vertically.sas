@@ -16,7 +16,7 @@ RUN;
 QUIT;
 /* 1.1. Using FILEREF variable in infile */
 * Generally we have seen infile is used to read only a single file so far and hard code the file path;
-* However, we can also use fileref name in the INFILE to read the raw data from the physical loation one after the other;
+* However, we can also use fileref name in the INFILE to read the raw data from multiple physical loation one after the other;
 * look for the use of : in the base cert;
 DATA work.firstqtr;
 	infile qtr1;
@@ -34,7 +34,7 @@ RUN;
 * file Specification given in INFILE is a place holder, it is neither a physical file name location not fileref;
 * temp = Arbitrarily named placeholder, it is neither a physical file path nor a fileref;
 * nextfile = Varible name given to FILEVAR, which contain the name of the Raw datafile to be read;
-* Multiple INFILE can also be usedm this program is for practicing INFILE with FILEVAR; 
+* Multiple INFILE can also be used this program is for practicing INFILE with FILEVAR; 
 DATA work.quarter;
 	do i=1,2,3;
 		* PUT(i,2.) here 2. is used to reserve 2 space followed by month, if datafile name is month12, month13, then after month we need 2 space;
@@ -154,7 +154,7 @@ RUN;
 * FORCE will through warning but it will append tables by dropping/tuncating the extra cols in DATA dataset;
 * Data structure of BASE dataset is the final and ultimate;
 * Dropping of cols from DATA dataset happens when cols in DATA is more than cols in BASE;
-* Truncating happens in DATA dataset when length of cols is greater than length of cols in BASE;
+* Truncating of a column value happens in DATA dataset when length of cols is greater than length of cols in BASE;
 * When the data type is different, Data Type from BASE= dataset is maintained and missing values is assigned to DATA= whose column datatype is unmatched;
 PROC APPEND
 	BASE=work.One
