@@ -11,7 +11,7 @@
 * To Create a macro, we need to first define it;
 /* defining format is: %MACRO <Macro_Name>; ..... %MEND <Macro_Name>; */
 * Macro_Name: is any valid SAS name, that do not carry any SAS key words;
-* Including Macro_Name in %MEND is optional, but for best coding practice it is better to exist;
+* Including Macro_Name in %MEND is optional, but for best coding practice it is better to include it;
 * When you submit the below code, Macro processor compiles these code and put an entry in default catalog, they do not execute until it is called for execution;
 %MACRO print_last_dataset;
 	PROC PRINT DATA=&syslast (obs=5); *&syslast is a automatic SAS Macro Variable, used to fetch last used dataset;
@@ -86,7 +86,7 @@ RUN;
 * Used when there is a syntax error or when we need to look at the source code;
 OPTIONS MPRINT;
 %print_last_dataset
-* let is switch-off the MPRINT option;
+* let us switch-off the MPRINT option;
 OPTIONS NOMPRINT;
 %print_last_dataset
 
@@ -144,11 +144,11 @@ Values passed to parameter list can be:
 * remember the order is important;
 %printdsn(sasuser.courses, course_code course_title days)
 * if we need to pass NULL, we can just leave the value blank;
-* let us pass null for vars below;
+* let us pass null for vars below, since var carries NULL, no values get printed to output;
 %printdsn(sasuser.courses)
 
 * 8.2. Keyword Parameters;
-* Key word params will also create Macro variabels automatically;
+* Key word params will also create Macro variables automatically;
 * Key=Value pair like definition;
 * Order of mentioning the parameter is not a problem here;
 * Values defined for the parameters in Macro becomes the default value if that particular param is not passed in Macro call;
@@ -254,9 +254,9 @@ Values passed to parameter list can be:
 	1. %LET used wintin a macro statement
 	2. SYMPUT used witin a macro statement
 	3. SYMPUTX used within a macro statement
-	4. SELCT with INTO in PROC SQL used within a macro statement
+	4. SELECT with INTO in PROC SQL used within a macro statement
 	5. using the %LOCAL statement;
-* When creating Macro variable during execution useing SYMPUT or SYMPUTX, if Local Symbol table exist wil get stored there;
+* When creating Macro variable during execution using SYMPUT or SYMPUTX, if Local Symbol table exist wil get stored there;
 * If there is no local symbol table, then MV created out of SYMPUT and SYMPUTX gets stored in global symbol table;
 * LOCAL and GLOBAL symbol tables should have same name for MV but can carry different values;
 %let dsn=sasuser.courses; * this is a global MV;
@@ -266,6 +266,8 @@ Values passed to parameter list can be:
 	%PUT The value of DSN inside peintdsn is &dsn; * fetches from LOCAL symbol table;
 %mend printdsn;
 * callin the macro;
+%put _users_;
+%put _global_;
 %printdsn
 %PUT The value of DSN inside peintdsn is &dsn; * fetches from GLOBAL symbol table;
 * Thus MV defined inside Macros are called LOCAL MV and gets stored in Local symbol table;
@@ -287,6 +289,12 @@ Values passed to parameter list can be:
 * 9.3.3. Multiple Local Symbol Table;
 * Multiple local symbol table exist concurrently during macro execution if there is a nested macro;
 * Thus, multiple local symbol table is created when macro program is nested;
+%MACRO inner;
+	%local variy;
+	%let variy=&varix;
+	%put &variy;
+%MEND inner;
+
 %MACRO outer;
 	%local varix;
 	%let varix=one;
@@ -294,11 +302,6 @@ Values passed to parameter list can be:
 	%inner
 %MEND outer;
 
-%MACRO inner;
-	%local variy;
-	%let variy=&varix;
-	%put &variy;
-%MEND inner;
 * case-1: when varix=zero;
 %let varix=zero;
 %outer;
