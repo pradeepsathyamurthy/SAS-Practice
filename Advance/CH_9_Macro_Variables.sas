@@ -200,7 +200,7 @@ quit;
 
 * %NRBQUOTE is same as %BQUOTE, however it also handles & and %;
 * so, this can be used as the most convinent function to handle any special characters;
-%LET var6 = %NRBQUOTE(Pradeep's &Sruthi's); * this will cause issue as macro compiler treats &sruthi as a macro, howwer it is not defined;
+%LET var6 = %NRBQUOTE(Pradeep's &Sruthi's); * this will cause warning as macro compiler treats &sruthi as a macro, howwer it is not defined;
 %PUT &var6;
 run;
 quit;
@@ -224,8 +224,8 @@ quit;
 
 * 4. %QSUBSTR - handles macro triggers too;
 %LET var8 = %BQUOTE(05JAN'2018);
-%PUT %SUBSTR(&var7,3); * this will not produce proper needed result, SUBSTR will ignore any spl characters it faces;
-%PUT %QSUBSTR(&var7,3); * this will produce a proper result by nullifying the effect of ' in MV;
+%PUT %SUBSTR(&var8,3); * this will not produce proper needed result, SUBSTR will ignore any spl characters it faces;
+%PUT %QSUBSTR(&var8,3); * this will produce a proper result by nullifying the effect of ' in MV;
 
 * 5. %INDEX - returns the position of the matching value;
 %PUT %INDEX(&var7,JAN); * returns the position 3 for the same;
@@ -234,7 +234,7 @@ quit;
 * 6. %SCAN - works like a find/search;
 %LET dataset1 = SASUSER.PAYROLLMASTER;
 %PUT %SCAN(&dataset1, 1, .); * this will search for first word before a period, thus returns SASUSER;
-%PUT %SCAN(&dataset1, 2, .); * this will return the secon value after period;
+%PUT %SCAN(&dataset1, 2, .); * this will return the second value after period;
 %LET dataset2 = WORK.SAS.PAY.MAN;
 %PUT %SCAN(&dataset2, 3, .); * this will return value pay, data in the 3 position with period as seperator;
 
@@ -247,7 +247,7 @@ quit;
 %PUT %SYSFUNC("&SYSDATE, &SYSTIME - SALES Report"); * remember, this will give error message;
 * &sysdate and &systime are not SAS functions, they are SAS Automatic macro variables;
 * SAS Functions includes - DIF(), DIM(), HBOUND(), INPUT(), IORCMSG(), LAG(), LBOUND(), MISSING(), PUT(), RESOLVE(), SYMGET();
-%PUT TODAYE(); * today() will be displayed as a char;
+%PUT TODAY(); * today() will be displayed as a char;
 * To execute this as a SAS function, we use SYSFUNCT;
 %PUT %SYSFUNC(TODAY()) - Sales Report; * This will not through error. However, format for today() will be a number;
 %PUT %SYSFUNC(TODAY(), WEEKDATE.) - Sales Report; * including the FORMAT WEEKDATE. help to convert the todays date;
