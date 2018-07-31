@@ -27,7 +27,7 @@
 * 1. Create a systematic Sample from a known number of observation;
 * These are samples chosen at a regular interval from a population;
 * Use POINT option in SET statement;
-* Remember POINT carries only a varibale and not a constant, value must be given before exc and it is a temp variable;
+* Remember POINT carries only a varibale name and not a constant or a variable value, value must be given before exc and it is a temp variable;
 PROC PRINT DATA=sasuser.revenue;
 RUN;
 QUIT;
@@ -35,7 +35,7 @@ QUIT;
 * We are trying to pick data systematically of every 10th observation, starting from observation 1 to 100;
 * Thus, it is a systematic sample - This is a direct access read only sample, only reads those which are directed;
 * Being Direct read access, there is no EoF marker, thus there is a explicit need of STOP statement to the POINT else loop will be infinite;
-* Also, do not forget to add OUTPUT, OUTPUT is the command which will push the data to new dataset;
+* Also, do not forget to add OUTPUT, OUTPUT is the command which will push the data from PDV to new dataset;
 DATA work.revenue_sample;
 	do i = 1 to 100 by 10;
 		SET sasuser.revenue POINT=i;
@@ -225,12 +225,13 @@ QUIT;
 OPTIONS MSGLEVEL=i;
 RUN;
 * Let us test the MSGLEVEL options with actual dataset on which an index exist;
+* Below code will disply info saying index is used;
 OPTIONS MSGLEVEL=i;
 PROC PRINT DATA=SIMPLE_INDEX1;
 	where Division ne 'FLIGHT OPERATIONS';
 RUN;
 QUIT;
-
+* In below code index is not used;
 OPTIONS MSGLEVEL=I;
 PROC PRINT DATA=SIMPLE_INDEX1;
 	where EMPID < 'E50000';
@@ -289,7 +290,7 @@ RUN;
 QUIT;
 
 * 10. Copying the Dataset;
-* Use the COPY option in the PROC DATASETS for the same;
+* Use the COPY and SELECT option in the PROC DATASETS for the same;
 * When a dataset is copied, all associated index are also copied with it;
 PROC DATASETS LIBRARY=WORK nolist;
 	COPY OUT=SASUSER; * remember to use OUT command;
@@ -319,6 +320,3 @@ PROC DATASETS LIBRARY=WORK NOLIST;
 	RENAME EMPID=EMP_ID;
 RUN;
 QUIT;
-
-
-
