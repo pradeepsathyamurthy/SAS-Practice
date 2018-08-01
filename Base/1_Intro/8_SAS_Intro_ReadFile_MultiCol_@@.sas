@@ -25,6 +25,8 @@ DATA data_multi_col;
 	keep name total_score grade;
 
 PROC PRINT;
+RUN;
+QUIT;
 
 DATA TEST_1;
 	* Will go to first row print first value as x and second value as y;
@@ -38,6 +40,9 @@ DATA TEST_1;
 ;
 
 PROC PRINT;
+RUN;
+QUIT;
+
 
 DATA TEST_2;
 	* certainly we will miss reading some dat spread across other collumn if not define with proper input and output;
@@ -61,5 +66,4 @@ PROC PRINT;
 RUN;
 QUIT;
 
-RUN;
-QUIT;
+
