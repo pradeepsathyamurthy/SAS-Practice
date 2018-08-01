@@ -14,7 +14,7 @@ if condition1 then action1;
 else if condition2 then action2;
 else default_action;
 
-* if else fo - becareful wile using this statement;
+* if else do - becareful wile using this statement;
 if condition1 then do;
    action1 statements;
 else condition2 then do;
@@ -41,9 +41,10 @@ DATA SAM;
 DATA SAM2;
  set sam;
  if x=5 then z=5;
+RUN;
 
 PROC PRINT data=sam2;
-
+RUN;
 * StateRegions1 Example
   Classify states by the four census regions:
   Northeast, Midwest, South, and West.
