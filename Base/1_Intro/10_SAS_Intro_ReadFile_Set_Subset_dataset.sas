@@ -10,7 +10,7 @@ PROC SORT;
 
 DATA OLDER_GIRLS;
 	* We use set command with end operator to read through the complete dataset;
-	* Also make sure the datset you read get sorted in a way and you by variable should be that;
+	* Also make sure the dataset you read get sorted in a way and you by variable should be that;
 	set KIDS_1 end=eof;
 	by name;
 	if age<11 then delete;
