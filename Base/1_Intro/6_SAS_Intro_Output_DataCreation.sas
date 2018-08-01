@@ -1,4 +1,4 @@
-/* 5_SAS_Intro_Output_DataCreation.sas */
+/* 6_SAS_Intro_Output_DataCreation.sas */
 
 * Here we will see how to create a data set without using input statement;
 * output command is used, we need to define each row using its variable name and at end give output;
