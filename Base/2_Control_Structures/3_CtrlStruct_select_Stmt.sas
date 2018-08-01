@@ -51,9 +51,12 @@ DATA STATES2;
 	            'Arizona', 'New Mexico', 'Alaska', 'Washington', 'Oregon', 
 	            'California', 'Hawaii')
 	         region = 'West';
-	      otherwise;
+
+		otherwise
+			 region = 'NA';
 
 	end;
+RUN;
 
 proc print;
 
