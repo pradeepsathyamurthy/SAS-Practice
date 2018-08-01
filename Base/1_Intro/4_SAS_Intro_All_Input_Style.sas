@@ -28,6 +28,7 @@ DATA quiz1;
 	else if course_score >= 60.0 then grade='D';
 	else grade='F';
 
+* This shows how to print only few selected columns;
 PROC PRINT;
 	var name course_score grade;
 
@@ -35,7 +36,7 @@ DATA MY_SET;
 	* $w. is an informat used to read the data by trimming the space;
 	* :$w. is an informat used to read the data and stop when it encounters a space;
 	* $CHARw. is an informat used to read the data without trimming the spaces;
-	* So if you want to reas a text including space use $CHARw. ;
+	* So if you want to read a text including space use $CHARw. ;
 	* If you want to read a text without any space use $w. ;
 	* And if you want to read a text which should stop reading when it encounters space use :$w. ;
 	* This is applicable for all other informats too;
