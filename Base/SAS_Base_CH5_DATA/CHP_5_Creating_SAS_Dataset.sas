@@ -117,7 +117,7 @@ PROC PRINT DATA=CH5_LIB.stress;
 RUN;
 
 * Steps to create a RAW Data File
-	1. Decrea a _NULL_ data step (Opp to defining a SAS Data command)
+	1. Declare a _NULL_ data step (Opp to defining a SAS Data command)
 	2. Set the SAS dataset from which we need to create a raw dataset (This is has no correlation with SAS dataset creation step)
 	3. File name implication, that is imply where and what type of Data file needs to be created (This is like infile step)
 	4. Use Put command to decide what collumns are needed in Raw data file (this is like input statement);
