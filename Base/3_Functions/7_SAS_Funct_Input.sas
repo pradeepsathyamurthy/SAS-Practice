@@ -5,3 +5,5 @@ data testin;
       datalines;
    2,115,353
    ;
+RUN;
+QUIT;
