@@ -1,5 +1,5 @@
 /* This will cover the functions available in SAS and its usage */
-* abs - this function will take an input x and output the absolute vale of x;
+* length - this function is used to find the length of a string;
 DATA LENGTH_DATA;
 	input a $CHAR30.;
 	b=length(a);
